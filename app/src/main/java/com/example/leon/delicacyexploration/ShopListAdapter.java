@@ -1,7 +1,5 @@
 package com.example.leon.delicacyexploration;
 
-//Created by leon on 2017/8/5.
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +9,8 @@ import android.widget.TextView;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+
+//Created by leon on 2017/8/5.
 
 public class ShopListAdapter extends ArrayAdapter<Shop>
 {

@@ -8,6 +8,7 @@
         android:id="@+id/shopName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
         android:text="兔子咖啡"
         android:textSize="24sp" />
 
@@ -16,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
+        android:paddingLeft="8dp"
         android:text="評價分數: 10/10" />
 
     <TextView
@@ -23,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
+        android:paddingLeft="8dp"
         android:text="兔子市兔子區兔子路1段1號" />
 
 </LinearLayout>
