@@ -17,6 +17,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+    private Fragment _currentFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -54,6 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (_currentFragment.getClass() == ShopDetail.class)
+        {
+            DisplayShopList();
         }
         else
         {
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_gallery)
         {
-            DisplayShopList();
         }
         else if (id == R.id.nav_slideshow)
         {
@@ -121,18 +126,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplayShopList()
     {
-        Fragment fragment = new ShopList();
+        _currentFragment = new ShopList();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, fragment);
+        transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
     }
 
     public void DisplayShopDetail(Shop shop)
     {
-        Fragment fragment = new ShopDetail();
-        ((ShopDetail) fragment).SetShopData(shop);
+        _currentFragment = new ShopDetail();
+        ((ShopDetail) _currentFragment).SetShopData(shop);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, fragment);
+        transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
     }
 }
