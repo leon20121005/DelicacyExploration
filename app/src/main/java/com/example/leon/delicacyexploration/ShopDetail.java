@@ -25,14 +25,28 @@ public class ShopDetail extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
+        ViewHolder viewHolder = new ViewHolder();
+
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("ShopDetail");
-        TextView textView = (TextView) view.findViewById(R.id.shopDetailName);
-        textView.setText(_data.GetName());
+
+        viewHolder.shopDetailName = (TextView) view.findViewById(R.id.shopDetailName);
+        viewHolder.shopDetailEvaluation = (TextView) view.findViewById(R.id.shopDetailEvaluation);
+        viewHolder.shopDetailAddress = (TextView) view.findViewById(R.id.shopDetailAddress);
+        viewHolder.shopDetailName.setText(_data.GetName());
+        viewHolder.shopDetailEvaluation.setText(_data.GetEvaluation());
+        viewHolder.shopDetailAddress.setText(_data.GetAddress());
     }
 
     public void SetShopData(Shop data)
     {
         _data = data;
+    }
+
+    private static class ViewHolder
+    {
+        TextView shopDetailName;
+        TextView shopDetailEvaluation;
+        TextView shopDetailAddress;
     }
 }

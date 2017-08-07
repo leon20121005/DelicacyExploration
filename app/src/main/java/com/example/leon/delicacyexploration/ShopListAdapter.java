@@ -36,6 +36,7 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
 
             //設定ListView內每個元素裡面的TextView元件
             viewHolder.shopName = (TextView) convertView.findViewById(R.id.shopName);
+            viewHolder.shopEvaluation = (TextView) convertView.findViewById(R.id.shopEvaluation);
             viewHolder.shopAddress = (TextView) convertView.findViewById(R.id.shopAddress);
 
             convertView.setTag(viewHolder);
@@ -46,6 +47,7 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
         }
 
         viewHolder.shopName.setText(shop.GetName()); //設定ListView內每個元素的商店名字
+        viewHolder.shopEvaluation.setText(shop.GetEvaluation()); //設定ListView內每個元素的商店評價
         viewHolder.shopAddress.setText(shop.GetAddress()); //設定ListView內每個元素的商店地址
 
         return convertView;
@@ -54,6 +56,7 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
     private static class ViewHolder
     {
         TextView shopName;
+        TextView shopEvaluation;
         TextView shopAddress;
     }
 }
