@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,9 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        InitializeListView();
+        DisplayShopList();
     }
 
     @Override
@@ -100,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.nav_gallery)
         {
+            DisplayShopList();
         }
         else if (id == R.id.nav_slideshow)
         {
@@ -119,19 +119,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void InitializeListView()
+    private void DisplayShopList()
     {
-        ArrayList<Shop> shopList = new ArrayList<>();
+        Fragment fragment = new ShopList();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
+    }
 
-        //人工填入商店資料
-        for (int index = 1; index <= 10; index++)
-        {
-            String tag = Integer.toString(index);
-            shopList.add(new Shop("兔子咖啡 " + tag, "評價分數: 10/10", "兔子市兔子區兔子路1段" + tag + "號"));
-        }
-
-        ListView listView = (ListView) findViewById(R.id.shopList);
-        ShopListAdapter shopListAdapter = new ShopListAdapter(this, shopList);
-        listView.setAdapter(shopListAdapter);
+    public void DisplayShopDetail(Shop shop)
+    {
+        Fragment fragment = new ShopDetail();
+        ((ShopDetail) fragment).SetShopData(shop);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, fragment);
+        transaction.commit();
     }
 }

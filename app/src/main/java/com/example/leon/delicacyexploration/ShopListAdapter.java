@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class ShopListAdapter extends ArrayAdapter<Shop>
 {
-    Context _context;
+    private Context _context;
 
     public ShopListAdapter(Context context, ArrayList<Shop> shopList)
     {
