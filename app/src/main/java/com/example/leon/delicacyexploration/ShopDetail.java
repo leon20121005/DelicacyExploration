@@ -19,12 +19,11 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback
     private Shop _data;
     private GoogleMap _googleMap;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        //Returning our layout file
+        // Returning our layout file
         return inflater.inflate(R.layout.shop_detail, container, false); //第一個參數為Fragment的layout
     }
 
@@ -53,34 +52,6 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap)
     {
         _googleMap = googleMap;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        (new ViewHolder()).mapView.onResume();
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        (new ViewHolder()).mapView.onPause();
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        (new ViewHolder()).mapView.onDestroy();
-    }
-
-    @Override
-    public void onLowMemory()
-    {
-        super.onLowMemory();
-        (new ViewHolder()).mapView.onLowMemory();
     }
 
     public void SetShopData(Shop data)
