@@ -27,6 +27,12 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:paddingLeft="8dp"
+        android:paddingBottom="80dp"
         android:text="shopDetailAddress" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/shopDetailMapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
 </LinearLayout>
