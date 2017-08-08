@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.support.annotation.NonNull;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private Fragment _currentFragment;
@@ -122,6 +124,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    //實作「支援」程式庫中的ActivityCompat.OnRequestPermissionsResultCallback，以處理權限要求的結果
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        if (_currentFragment.getClass() == ShopDetail.class)
+        {
+            ((ShopDetail) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void DisplayShopList()

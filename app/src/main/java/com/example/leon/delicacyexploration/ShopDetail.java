@@ -1,11 +1,17 @@
 package com.example.leon.delicacyexploration;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -14,10 +20,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 //Created by leon on 2017/8/6.
 
-public class ShopDetail extends Fragment implements OnMapReadyCallback
+public class ShopDetail extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback
 {
     private Shop _data;
     private GoogleMap _googleMap;
+    private final int MY_LOCATION_REQUEST_CODE = 1;
 
     @Nullable
     @Override
@@ -52,6 +59,39 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap)
     {
         _googleMap = googleMap;
+        EnableMyLocation();
+    }
+
+    //在啟用「我的位置」圖層之前，使用「支援」程式庫檢查權限
+    private void EnableMyLocation()
+    {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // Show rationale and request permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
+        }
+        else if (_googleMap != null)
+        {
+            // Access to the location has been granted to the app
+            _googleMap.setMyLocationEnabled(true);
+        }
+    }
+
+    //處理Activity的onRequestPermissionsResult()
+    public void OnRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        if (requestCode == MY_LOCATION_REQUEST_CODE)
+        {
+            if (permissions.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                EnableMyLocation();
+            }
+            else
+            {
+                // Permission was denied. Display an error message.
+                Toast.makeText(getActivity(), "No permission to get my location", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void SetShopData(Shop data)
