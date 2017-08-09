@@ -2,6 +2,8 @@ package com.example.leon.delicacyexploration;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -14,9 +16,16 @@ import android.widget.Toast;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
+
+import java.io.IOException;
+import java.util.Locale;
+import java.util.List;
 
 //Created by leon on 2017/8/6.
 
@@ -60,6 +69,7 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
     {
         _googleMap = googleMap;
         EnableMyLocation();
+        PositioningAddress();
     }
 
     //在啟用「我的位置」圖層之前，使用「支援」程式庫檢查權限
@@ -91,6 +101,33 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
                 // Permission was denied. Display an error message.
                 Toast.makeText(getActivity(), "No permission to get my location", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    //根據店家的地址將位置標記在地圖上
+    private void PositioningAddress()
+    {
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        List<Address> addressList = null;
+
+        try
+        {
+            addressList = geocoder.getFromLocationName(_data.GetAddress(), 1);
+        }
+        catch (IOException ioException)
+        {
+            ioException.printStackTrace();
+        }
+
+        if (addressList != null && addressList.size() != 0)
+        {
+            LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
+            _googleMap.addMarker(new MarkerOptions().position(latLng).title(_data.GetName()));
+            _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
+        else
+        {
+            Toast.makeText(getActivity(), "Can't find location", Toast.LENGTH_SHORT).show();
         }
     }
 

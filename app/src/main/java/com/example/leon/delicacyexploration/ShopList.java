@@ -41,6 +41,7 @@ public class ShopList extends Fragment
             String tag = Integer.toString(index);
             shopList.add(new Shop("兔子咖啡 " + tag, "評價分數: 10/10", "兔子市兔子區兔子路1段" + tag + "號"));
         }
+        shopList.add(new Shop("饗食天堂", "評價分數: 10/10", "台北市信義區松壽路12號6樓"));
 
         ListView listView = (ListView) view.findViewById(R.id.shopList);
         ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), shopList);
