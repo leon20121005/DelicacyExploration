@@ -20,6 +20,8 @@ import android.support.annotation.NonNull;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private Fragment _currentFragment;
+    private FloatingActionButton _fab;
+    private FloatingActionButton _returnButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,14 +31,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener()
+        _fab = (FloatingActionButton) findViewById(R.id.fab);
+        _fab.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        _returnButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        _returnButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                DisplayShopList();
             }
         });
 
@@ -142,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
+
+        _fab.show();
+        _returnButton.hide();
     }
 
     public void DisplayShopDetail(Shop shop)
@@ -151,5 +166,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
+
+        _fab.hide();
+        _returnButton.show();
     }
 }
