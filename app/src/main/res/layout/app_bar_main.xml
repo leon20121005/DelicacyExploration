@@ -37,6 +37,6 @@
         android:layout_gravity="bottom|start"
         android:layout_margin="@dimen/fab_margin"
         app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="?android:attr/actionModeCloseDrawable" />
+        app:srcCompat="@drawable/ic_chevron_left_white_24px" />
 
 </android.support.design.widget.CoordinatorLayout>
