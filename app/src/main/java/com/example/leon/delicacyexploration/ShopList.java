@@ -7,14 +7,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.support.annotation.Nullable;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 //Created by leon on 2017/8/6.
 
-public class ShopList extends Fragment
+public class ShopList extends Fragment implements AsyncResponse
 {
+    private final String SHOP_LIST_URL = "http://36.231.114.104/android/get_all_shops.php";
+    private ArrayList<Shop> _shopList = new ArrayList<>();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -27,24 +35,14 @@ public class ShopList extends Fragment
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        InitializeListView(view);
+        new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
     }
 
     //初始化ListView
     private void InitializeListView(View view)
     {
-        final ArrayList<Shop> shopList = new ArrayList<>();
-
-        //人工填入商店資料
-        for (int index = 1; index <= 15; index++)
-        {
-            String tag = Integer.toString(index);
-            shopList.add(new Shop("兔子咖啡 " + tag, "評價分數: 10/10", "兔子市兔子區兔子路1段" + tag + "號"));
-        }
-        shopList.add(new Shop("饗食天堂", "評價分數: 10/10", "台北市信義區松壽路12號6樓"));
-
         ListView listView = (ListView) view.findViewById(R.id.shopList);
-        ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), shopList);
+        ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
         listView.setAdapter(shopListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -52,8 +50,47 @@ public class ShopList extends Fragment
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
-                ((MainActivity) getActivity()).DisplayShopDetail(shopList.get(position));
+                ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
             }
         });
+    }
+
+    @Override
+    public void FinishAsyncProcess(String output)
+    {
+        JSONObject jsonObject;
+        JSONArray shops;
+
+        try
+        {
+            jsonObject = new JSONObject(output);
+            int isSuccess = jsonObject.getInt("success");
+
+            if (isSuccess == 1)
+            {
+                shops = jsonObject.getJSONArray("shops");
+
+                for (int index = 0; index < shops.length(); index++)
+                {
+                    JSONObject tupleJSON = shops.getJSONObject(index);
+
+                    String shopName = tupleJSON.getString("name");
+                    String shopEvaluation = Integer.toString(tupleJSON.getInt("evaluation"));
+                    String shopAddress = tupleJSON.getString("address");
+
+                    _shopList.add(new Shop(shopName, "評價分數: " + shopEvaluation + "/10", shopAddress));
+                }
+            }
+            else
+            {
+                Toast.makeText(getActivity(), "No shops found", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (JSONException exception)
+        {
+            exception.printStackTrace();
+        }
+
+        InitializeListView(getView());
     }
 }
