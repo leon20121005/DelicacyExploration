@@ -35,6 +35,8 @@ public class ShopList extends Fragment implements AsyncResponse
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("店家列表");
+
         new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
     }
 

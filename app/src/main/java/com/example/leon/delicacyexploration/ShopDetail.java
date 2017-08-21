@@ -49,7 +49,7 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         ViewHolder viewHolder = new ViewHolder();
 
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("ShopDetail");
+        getActivity().setTitle("店家資訊");
 
         viewHolder.shopDetailName = (TextView) view.findViewById(R.id.shopDetailName);
         viewHolder.shopDetailEvaluation = (TextView) view.findViewById(R.id.shopDetailEvaluation);

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:text="shopDetailName"
         android:textSize="24sp" />
 
@@ -19,6 +20,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:text="shopDetailEvaluation" />
 
     <TextView
@@ -27,7 +29,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:paddingLeft="8dp"
-        android:paddingBottom="80dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="40dp"
         android:text="shopDetailAddress" />
 
     <com.google.android.gms.maps.MapView
