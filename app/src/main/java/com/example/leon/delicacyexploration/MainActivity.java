@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplaySearchShop()
     {
-        _currentFragment = new SearchShop();
+        _currentFragment = new ShopSearch();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
