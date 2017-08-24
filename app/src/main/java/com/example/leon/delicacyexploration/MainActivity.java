@@ -112,14 +112,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera)
+        if (id == R.id.nav_shop_list)
+        {
+            DisplayShopList();
+        }
+        else if (id == R.id.nav_shop_search)
+        {
+            DisplaySearchShop();
+        }
+        else if (id == R.id.nav_camera)
         {
             // Handle the camera action
-            DisplayShopList();
         }
         else if (id == R.id.nav_gallery)
         {
-            DisplaySearchShop();
         }
         else if (id == R.id.nav_slideshow)
         {
