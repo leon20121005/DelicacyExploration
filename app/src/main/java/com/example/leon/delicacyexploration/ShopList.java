@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ShopList extends Fragment implements AsyncResponse
 {
-    private final String SHOP_LIST_URL = "http://36.231.114.104/android/get_all_shops.php";
+    private final String SHOP_LIST_URL = "http://36.231.104.82/android/get_all_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
 
     @Nullable
@@ -38,23 +38,6 @@ public class ShopList extends Fragment implements AsyncResponse
         getActivity().setTitle("店家列表");
 
         new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
-    }
-
-    //初始化ListView
-    private void InitializeListView(View view)
-    {
-        ListView listView = (ListView) view.findViewById(R.id.shopList);
-        ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
-        listView.setAdapter(shopListAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-            {
-                ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
-            }
-        });
     }
 
     @Override
@@ -94,5 +77,22 @@ public class ShopList extends Fragment implements AsyncResponse
         }
 
         InitializeListView(getView());
+    }
+
+    //初始化ListView
+    private void InitializeListView(View view)
+    {
+        ListView listView = (ListView) view.findViewById(R.id.shopList);
+        ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
+        listView.setAdapter(shopListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
+            }
+        });
     }
 }

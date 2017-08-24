@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.support.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
@@ -116,9 +115,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_camera)
         {
             // Handle the camera action
+            DisplayShopList();
         }
         else if (id == R.id.nav_gallery)
         {
+            DisplaySearchShop();
         }
         else if (id == R.id.nav_slideshow)
         {
@@ -151,6 +152,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void DisplayShopList()
     {
         _currentFragment = new ShopList();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.commit();
+
+        _fab.show();
+        _returnButton.hide();
+    }
+
+    private void DisplaySearchShop()
+    {
+        _currentFragment = new SearchShop();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
