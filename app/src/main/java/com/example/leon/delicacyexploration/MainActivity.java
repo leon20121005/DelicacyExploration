@@ -19,8 +19,6 @@ import android.support.annotation.NonNull;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
     private Fragment _currentFragment;
-    private FloatingActionButton _fab;
-    private FloatingActionButton _returnButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -30,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        _fab = (FloatingActionButton) findViewById(R.id.fab);
-        _fab.setOnClickListener(new View.OnClickListener()
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -41,13 +39,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        _returnButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        _returnButton.setOnClickListener(new View.OnClickListener()
+        FloatingActionButton returnButton = (FloatingActionButton) findViewById(R.id.returnButton);
+        returnButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                DisplayShopList();
+                getSupportFragmentManager().popBackStack(); //透過拉出堆疊最上層的Transaction回到上一個Fragment
             }
         });
 
@@ -69,10 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else if (_currentFragment.getClass() == ShopDetail.class)
-        {
-            DisplayShopList();
         }
         else
         {
@@ -161,9 +155,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
-
-        _fab.show();
-        _returnButton.hide();
     }
 
     private void DisplaySearchShop()
@@ -172,9 +163,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
-
-        _fab.show();
-        _returnButton.hide();
     }
 
     public void DisplayShopDetail(Shop shop)
@@ -183,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ((ShopDetail) _currentFragment).SetShopData(shop);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.addToBackStack(null); //把這個Fragment的切換加到堆疊最上方
         transaction.commit();
-
-        _fab.hide();
-        _returnButton.show();
     }
 }

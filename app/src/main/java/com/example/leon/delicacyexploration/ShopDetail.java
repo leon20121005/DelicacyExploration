@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -50,6 +51,11 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
 
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("店家資訊");
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.hide();
+        FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
+        returnButton.show();
 
         viewHolder.shopDetailName = (TextView) view.findViewById(R.id.shopDetailName);
         viewHolder.shopDetailEvaluation = (TextView) view.findViewById(R.id.shopDetailEvaluation);

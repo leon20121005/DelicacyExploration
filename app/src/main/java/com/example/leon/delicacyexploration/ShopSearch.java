@@ -2,6 +2,7 @@ package com.example.leon.delicacyexploration;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -12,14 +13,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.annotation.Nullable;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -27,8 +23,8 @@ import java.util.ArrayList;
 
 public class ShopSearch extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
 {
-    private final String SHOP_LIST_URL = "http://36.231.104.82/android/get_all_shops.php";
-    private ArrayList<Shop> _shopList = new ArrayList<>();
+    private final String SHOP_LIST_URL = "http://36.231.107.251/android/get_all_shops.php";
+    private ArrayList<Shop> _shopList;
     private ArrayList<Shop> _filteredShopList;
     private ShopListAdapter _shopListAdapter;
     private ListView _listView;
@@ -52,6 +48,11 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
     {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("店家搜尋");
+
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.show();
+        FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
+        returnButton.hide();
 
         new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
     }
@@ -105,13 +106,13 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
     }
 
     @Override
-    public boolean onMenuItemActionExpand(MenuItem item)
+    public boolean onMenuItemActionExpand(MenuItem menuItem)
     {
         return true;
     }
 
     @Override
-    public boolean onMenuItemActionCollapse(MenuItem item)
+    public boolean onMenuItemActionCollapse(MenuItem menuItem)
     {
         return true;
     }
@@ -119,38 +120,8 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
     @Override
     public void FinishAsyncProcess(String output)
     {
-        JSONObject jsonObject;
-        JSONArray shops;
-
-        try
-        {
-            jsonObject = new JSONObject(output);
-            int isSuccess = jsonObject.getInt("success");
-
-            if (isSuccess == 1)
-            {
-                shops = jsonObject.getJSONArray("shops");
-
-                for (int index = 0; index < shops.length(); index++)
-                {
-                    JSONObject tupleJSON = shops.getJSONObject(index);
-
-                    String shopName = tupleJSON.getString("name");
-                    String shopEvaluation = Integer.toString(tupleJSON.getInt("evaluation"));
-                    String shopAddress = tupleJSON.getString("address");
-
-                    _shopList.add(new Shop(shopName, "評價分數: " + shopEvaluation + "/10", shopAddress));
-                }
-            }
-            else
-            {
-                Toast.makeText(getActivity(), "No shops found", Toast.LENGTH_SHORT).show();
-            }
-        }
-        catch (JSONException exception)
-        {
-            exception.printStackTrace();
-        }
+        JsonParser jsonParser = new JsonParser();
+        _shopList = jsonParser.ParseShopList(getActivity(), output);
 
         InitializeListView(getView());
     }

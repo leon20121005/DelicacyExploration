@@ -1,18 +1,14 @@
 package com.example.leon.delicacyexploration;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.support.annotation.Nullable;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -20,7 +16,7 @@ import java.util.ArrayList;
 
 public class ShopList extends Fragment implements AsyncResponse
 {
-    private final String SHOP_LIST_URL = "http://36.231.104.82/android/get_all_shops.php";
+    private final String SHOP_LIST_URL = "http://36.231.107.251/android/get_all_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
 
     @Nullable
@@ -37,44 +33,19 @@ public class ShopList extends Fragment implements AsyncResponse
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("店家列表");
 
+        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.show();
+        FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
+        returnButton.hide();
+
         new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
     }
 
     @Override
     public void FinishAsyncProcess(String output)
     {
-        JSONObject jsonObject;
-        JSONArray shops;
-
-        try
-        {
-            jsonObject = new JSONObject(output);
-            int isSuccess = jsonObject.getInt("success");
-
-            if (isSuccess == 1)
-            {
-                shops = jsonObject.getJSONArray("shops");
-
-                for (int index = 0; index < shops.length(); index++)
-                {
-                    JSONObject tupleJSON = shops.getJSONObject(index);
-
-                    String shopName = tupleJSON.getString("name");
-                    String shopEvaluation = Integer.toString(tupleJSON.getInt("evaluation"));
-                    String shopAddress = tupleJSON.getString("address");
-
-                    _shopList.add(new Shop(shopName, "評價分數: " + shopEvaluation + "/10", shopAddress));
-                }
-            }
-            else
-            {
-                Toast.makeText(getActivity(), "No shops found", Toast.LENGTH_SHORT).show();
-            }
-        }
-        catch (JSONException exception)
-        {
-            exception.printStackTrace();
-        }
+        JsonParser jsonParser = new JsonParser();
+        _shopList = jsonParser.ParseShopList(getActivity(), output);
 
         InitializeListView(getView());
     }
