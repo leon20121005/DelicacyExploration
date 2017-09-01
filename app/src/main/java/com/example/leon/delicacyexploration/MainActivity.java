@@ -114,6 +114,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             DisplaySearchShop();
         }
+        else if (id == R.id.nav_shop_nearby)
+        {
+            DisplayNearbyShop();
+        }
         else if (id == R.id.nav_camera)
         {
             // Handle the camera action
@@ -165,13 +169,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
+    private void DisplayNearbyShop()
+    {
+        _currentFragment = new ShopNearby();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.commit();
+    }
+
     public void DisplayShopDetail(Shop shop)
     {
         _currentFragment = new ShopDetail();
         ((ShopDetail) _currentFragment).SetShopData(shop);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
-        transaction.addToBackStack(null); //把這個Fragment的切換加到堆疊最上方
+        transaction.addToBackStack(null); //把這個Fragment的切換推到堆疊最上方
         transaction.commit();
     }
 }

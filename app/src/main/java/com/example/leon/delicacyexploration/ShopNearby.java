@@ -1,23 +1,33 @@
 package com.example.leon.delicacyexploration;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 
-//Created by leon on 2017/8/6.
+//Created by leon on 2017/8/30.
 
-public class ShopList extends Fragment implements AsyncResponse
+public class ShopNearby extends Fragment implements AsyncResponse
 {
-    private final String SHOP_LIST_URL = getString(R.string.server_ip_address) + "/android/get_all_shops.php";
+    private final String NEARBY_SHOP_URL = getString(R.string.server_ip_address) + "/android/get_nearby_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
+
+    private double _latitude;
+    private double _longitude;
 
     @Nullable
     @Override
@@ -31,14 +41,19 @@ public class ShopList extends Fragment implements AsyncResponse
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("店家列表");
+        getActivity().setTitle("附近店家");
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.show();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 
-        new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
+        InitializeLocation();
+
+        String latitude = "lat=" + Double.toString(_latitude);
+        String longitude = "lng=" + Double.toString(_longitude);
+        String queryURL = NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&radius=5&limit=20";
+        new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
 
     @Override
@@ -48,6 +63,20 @@ public class ShopList extends Fragment implements AsyncResponse
         _shopList = jsonParser.ParseShopList(getActivity(), output);
 
         InitializeListView(getView());
+    }
+
+    private void InitializeLocation()
+    {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            Location myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            if (myLocation != null)
+            {
+                _latitude = myLocation.getLatitude();
+                _longitude = myLocation.getLongitude();
+            }
+        }
     }
 
     //初始化ListView
@@ -65,5 +94,8 @@ public class ShopList extends Fragment implements AsyncResponse
                 ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
             }
         });
+
+        Toast.makeText(getActivity(), "顯示附近5公里店家", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), Double.toString(_latitude) + ", " + Double.toString(_longitude), Toast.LENGTH_SHORT).show();
     }
 }
