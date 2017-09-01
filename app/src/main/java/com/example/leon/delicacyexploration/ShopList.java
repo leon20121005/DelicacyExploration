@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class ShopList extends Fragment implements AsyncResponse
 {
-    private final String SHOP_LIST_URL = getString(R.string.server_ip_address) + "/android/get_all_shops.php";
+    private final String SHOP_LIST_URL = "/android/get_all_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
 
     @Nullable
@@ -38,7 +38,7 @@ public class ShopList extends Fragment implements AsyncResponse
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 
-        new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
+        new HttpRequestAsyncTask((Fragment) this).execute(getString(R.string.server_ip_address) + SHOP_LIST_URL);
     }
 
     @Override

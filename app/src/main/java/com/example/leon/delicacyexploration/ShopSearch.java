@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class ShopSearch extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
 {
-    private final String SHOP_LIST_URL = getString(R.string.server_ip_address) + "/android/get_all_shops.php";
+    private final String SHOP_LIST_URL = "/android/get_all_shops.php";
     private ArrayList<Shop> _shopList;
     private ArrayList<Shop> _filteredShopList;
     private ShopListAdapter _shopListAdapter;
@@ -54,7 +54,7 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 
-        new HttpRequestAsyncTask((Fragment) this).execute(SHOP_LIST_URL);
+        new HttpRequestAsyncTask((Fragment) this).execute(getString(R.string.server_ip_address) + SHOP_LIST_URL);
     }
 
     @Override

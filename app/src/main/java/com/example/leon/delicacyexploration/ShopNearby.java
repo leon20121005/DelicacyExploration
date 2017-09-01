@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class ShopNearby extends Fragment implements AsyncResponse
 {
-    private final String NEARBY_SHOP_URL = getString(R.string.server_ip_address) + "/android/get_nearby_shops.php";
+    private final String NEARBY_SHOP_URL = "/android/get_nearby_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
 
     private double _latitude;
@@ -34,7 +34,7 @@ public class ShopNearby extends Fragment implements AsyncResponse
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         // Returning our layout file
-        return inflater.inflate(R.layout.shop_list, container, false); //第一個參數為Fragment的layout
+        return inflater.inflate(R.layout.shop_nearby, container, false); //第一個參數為Fragment的layout
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ShopNearby extends Fragment implements AsyncResponse
 
         String latitude = "lat=" + Double.toString(_latitude);
         String longitude = "lng=" + Double.toString(_longitude);
-        String queryURL = NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&radius=5&limit=20";
+        String queryURL = getString(R.string.server_ip_address) + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&radius=5&limit=20";
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
 
@@ -82,7 +82,7 @@ public class ShopNearby extends Fragment implements AsyncResponse
     //初始化ListView
     private void InitializeListView(View view)
     {
-        ListView listView = (ListView) view.findViewById(R.id.shopList);
+        ListView listView = (ListView) view.findViewById(R.id.nearbyList);
         ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
         listView.setAdapter(shopListAdapter);
 
