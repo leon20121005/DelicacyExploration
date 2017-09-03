@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.support.annotation.Nullable;
 
@@ -94,7 +95,10 @@ public class ShopNearby extends Fragment implements AsyncResponse
     //初始化ListView
     private void InitializeListView(View view)
     {
+        TextView emptyTextView = (TextView) view.findViewById(R.id.nearbyEmpty);
         ListView listView = (ListView) view.findViewById(R.id.nearbyList);
+        listView.setEmptyView(emptyTextView);
+
         ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
         listView.setAdapter(shopListAdapter);
 
