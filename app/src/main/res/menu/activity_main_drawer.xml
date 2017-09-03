@@ -10,10 +10,16 @@
             android:title="店家過濾" />
         <item
             android:id="@+id/nav_shop_nearby"
+            android:icon="@drawable/ic_near_me_black_24px"
             android:title="附近店家" />
         <item
             android:id="@+id/nav_shop_search"
+            android:icon="@drawable/ic_search_black_24px"
             android:title="店家搜尋" />
+        <item
+            android:id="@+id/nav_shop_favorite"
+            android:icon="@drawable/ic_star_border_black_24px"
+            android:title="我的最愛" />
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
