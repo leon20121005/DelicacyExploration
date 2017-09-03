@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 //Created by leon on 2017/8/22.
 
-public class ShopSearch extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
+public class ShopFilter extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
 {
     private final String SHOP_LIST_URL = "/android/get_all_shops.php";
     private ArrayList<Shop> _shopList;
@@ -40,7 +40,7 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         // Returning our layout file
-        return inflater.inflate(R.layout.shop_search, container, false);
+        return inflater.inflate(R.layout.shop_filter, container, false);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
     //初始化ListView
     private void InitializeListView(View view)
     {
-        TextView emptyTextView = (TextView) view.findViewById(R.id.searchEmpty);
-        _listView = (ListView) view.findViewById(R.id.searchList);
+        TextView emptyTextView = (TextView) view.findViewById(R.id.filterEmpty);
+        _listView = (ListView) view.findViewById(R.id.filterList);
         _listView.setEmptyView(emptyTextView);
 
         ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);

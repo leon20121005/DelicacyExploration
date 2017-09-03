@@ -110,9 +110,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             DisplayShopList();
         }
-        else if (id == R.id.nav_shop_search)
+        else if (id == R.id.nav_shop_filter)
         {
-            DisplaySearchShop();
+            DisplayFilterShop();
         }
         else if (id == R.id.nav_shop_nearby)
         {
@@ -161,9 +161,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    private void DisplaySearchShop()
+    private void DisplayFilterShop()
     {
-        _currentFragment = new ShopSearch();
+        _currentFragment = new ShopFilter();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
