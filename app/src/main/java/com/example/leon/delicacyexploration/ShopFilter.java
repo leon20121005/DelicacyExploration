@@ -47,7 +47,7 @@ public class ShopFilter extends Fragment implements AsyncResponse, SearchView.On
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("店家搜尋");
+        getActivity().setTitle("店家過濾");
 
         FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.show();

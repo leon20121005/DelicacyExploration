@@ -7,10 +7,13 @@
             android:title="店家列表" />
         <item
             android:id="@+id/nav_shop_filter"
-            android:title="店家搜尋" />
+            android:title="店家過濾" />
         <item
             android:id="@+id/nav_shop_nearby"
             android:title="附近店家" />
+        <item
+            android:id="@+id/nav_shop_search"
+            android:title="店家搜尋" />
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"

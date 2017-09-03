@@ -118,6 +118,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             DisplayNearbyShop();
         }
+        else if (id == R.id.nav_shop_search)
+        {
+            DisplaySearchShop();
+        }
         else if (id == R.id.nav_camera)
         {
             // Handle the camera action
@@ -172,6 +176,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void DisplayNearbyShop()
     {
         _currentFragment = new ShopNearby();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.commit();
+    }
+
+    private void DisplaySearchShop()
+    {
+        _currentFragment = new ShopSearch();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
