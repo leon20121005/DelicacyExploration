@@ -36,11 +36,12 @@ public class JsonParser
                 {
                     JSONObject tupleJSON = shops.getJSONObject(index);
 
+                    int shopID = tupleJSON.getInt("id");
                     String shopName = tupleJSON.getString("name");
                     String shopEvaluation = Integer.toString(tupleJSON.getInt("evaluation"));
                     String shopAddress = tupleJSON.getString("address");
 
-                    shopList.add(new Shop(shopName, "評價分數: " + shopEvaluation + "/10", shopAddress));
+                    shopList.add(new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress));
                 }
             }
             else

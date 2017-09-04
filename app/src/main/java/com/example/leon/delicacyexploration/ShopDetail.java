@@ -1,6 +1,7 @@
 package com.example.leon.delicacyexploration;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,8 +13,10 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -25,8 +28,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.List;
+import java.util.Set;
 
 //Created by leon on 2017/8/6.
 
@@ -35,6 +40,12 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
     private Shop _data;
     private GoogleMap _googleMap;
     private final int MY_LOCATION_REQUEST_CODE = 1;
+    private boolean _isFavorite;
+
+    public void SetShopData(Shop data)
+    {
+        _data = data;
+    }
 
     @Nullable
     @Override
@@ -64,10 +75,56 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         viewHolder.shopDetailEvaluation.setText(_data.GetEvaluation());
         viewHolder.shopDetailAddress.setText(_data.GetAddress());
 
+        viewHolder.myFavoriteButton = (ImageButton) view.findViewById(R.id.imageButton);
+        InitializeMyFavoriteButton(viewHolder.myFavoriteButton);
+
         viewHolder.mapView = (MapView) view.findViewById(R.id.shopDetailMapView);
         viewHolder.mapView.onCreate(savedInstanceState);
         viewHolder.mapView.onResume();
         viewHolder.mapView.getMapAsync(this);
+    }
+
+    //初始化ImageButton
+    private void InitializeMyFavoriteButton(final ImageButton imageButton)
+    {
+        Set<String> defaultShopIDList = new HashSet<>();
+        final SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        final Set<String> favoriteShopIDList = sharedPreferences.getStringSet("FavoriteShopIDList", defaultShopIDList);
+        _isFavorite = favoriteShopIDList.contains(Integer.toString(_data.GetID()));
+
+        if (_isFavorite)
+        {
+            imageButton.setBackgroundResource(R.drawable.ic_star_black_24px);
+        }
+        else
+        {
+            imageButton.setBackgroundResource(R.drawable.ic_star_border_black_24px);
+        }
+
+        imageButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                if (_isFavorite)
+                {
+                    _isFavorite = false;
+                    imageButton.setBackgroundResource(R.drawable.ic_star_border_black_24px);
+                    favoriteShopIDList.remove(Integer.toString(_data.GetID()));
+
+                }
+                else
+                {
+                    _isFavorite = true;
+                    imageButton.setBackgroundResource(R.drawable.ic_star_black_24px);
+                    favoriteShopIDList.add(Integer.toString(_data.GetID()));
+                }
+                editor.putStringSet("FavoriteShopIDList", favoriteShopIDList);
+                editor.apply();
+            }
+        });
     }
 
     @Override
@@ -137,16 +194,12 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         }
     }
 
-    public void SetShopData(Shop data)
-    {
-        _data = data;
-    }
-
     private static class ViewHolder
     {
         TextView shopDetailName;
         TextView shopDetailEvaluation;
         TextView shopDetailAddress;
+        ImageButton myFavoriteButton;
         MapView mapView;
     }
 }
