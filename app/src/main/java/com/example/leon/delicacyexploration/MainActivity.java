@@ -122,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             DisplaySearchShop();
         }
+        else if (id == R.id.nav_shop_favorite)
+        {
+            DisplayFavoriteShop();
+        }
         else if (id == R.id.nav_camera)
         {
             // Handle the camera action
@@ -184,6 +188,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void DisplaySearchShop()
     {
         _currentFragment = new ShopSearch();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.commit();
+    }
+
+    private void DisplayFavoriteShop()
+    {
+        _currentFragment = new ShopFavorite();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();

@@ -54,6 +54,14 @@ public class HttpRequestAsyncTask extends AsyncTask<String, Void, String>
         _httpMethod = "GET";
     }
 
+    public HttpRequestAsyncTask(Fragment delegate, HashMap<String, String> postData, String httpMethod)
+    {
+        _delegate = (AsyncResponse) delegate;
+        _context = delegate.getActivity();
+        _postData = postData;
+        _httpMethod = httpMethod;
+    }
+
     @Override
     protected void onPreExecute()
     {

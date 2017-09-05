@@ -107,12 +107,14 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
             public void onClick(View view)
             {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.clear();
 
                 if (_isFavorite)
                 {
                     _isFavorite = false;
                     imageButton.setBackgroundResource(R.drawable.ic_star_border_black_24px);
                     favoriteShopIDList.remove(Integer.toString(_data.GetID()));
+                    Toast.makeText(getActivity(), "已移除收藏", Toast.LENGTH_SHORT).show();
 
                 }
                 else
@@ -120,6 +122,7 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
                     _isFavorite = true;
                     imageButton.setBackgroundResource(R.drawable.ic_star_black_24px);
                     favoriteShopIDList.add(Integer.toString(_data.GetID()));
+                    Toast.makeText(getActivity(), "已加入收藏", Toast.LENGTH_SHORT).show();
                 }
                 editor.putStringSet("FavoriteShopIDList", favoriteShopIDList);
                 editor.apply();
