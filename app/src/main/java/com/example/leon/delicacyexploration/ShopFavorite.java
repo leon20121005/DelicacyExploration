@@ -37,7 +37,7 @@ public class ShopFavorite extends Fragment implements AsyncResponse
     private double _latitude;
     private double _longitude;
 
-    private final String DEFAULT_QUERY_ORDER = "依距離顯示";
+    private final String DEFAULT_QUERY_ORDER = "distance";
     private String _queryOrder = DEFAULT_QUERY_ORDER;
 
     @Nullable
@@ -105,6 +105,7 @@ public class ShopFavorite extends Fragment implements AsyncResponse
         postData.put("id_list", idList);
         postData.put("latitude", Double.toString(_latitude));
         postData.put("longitude", Double.toString(_longitude));
+        postData.put("order", _queryOrder);
 
         String queryURL = getString(R.string.server_ip_address) + FAVORITE_SHOP_URL;
 
@@ -135,7 +136,7 @@ public class ShopFavorite extends Fragment implements AsyncResponse
     private void InitializeSpinner(View view)
     {
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        String[] order = {DEFAULT_QUERY_ORDER};
+        String[] order = {"依距離顯示", "依評價顯示"};
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, order);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
@@ -156,6 +157,8 @@ public class ShopFavorite extends Fragment implements AsyncResponse
                     case 0:
                         _queryOrder = DEFAULT_QUERY_ORDER;
                         break;
+                    case 1:
+                        _queryOrder = "evaluation";
                 }
                 SendQuery();
             }
