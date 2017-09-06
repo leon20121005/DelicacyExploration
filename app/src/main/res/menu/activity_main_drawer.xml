@@ -4,9 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_shop_list"
+            android:icon="@drawable/ic_list_black_24px"
             android:title="店家列表" />
         <item
             android:id="@+id/nav_shop_filter"
+            android:icon="@drawable/ic_filter_none_black_24px"
             android:title="店家過濾" />
         <item
             android:id="@+id/nav_shop_nearby"

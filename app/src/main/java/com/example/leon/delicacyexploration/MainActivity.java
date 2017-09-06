@@ -18,6 +18,7 @@ import android.support.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
 {
+    private Fragment _previousFragment;
     private Fragment _currentFragment;
 
     @Override
@@ -45,7 +46,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view)
             {
-                getSupportFragmentManager().popBackStack(); //透過拉出堆疊最上層的Transaction回到上一個Fragment
+                if (_previousFragment != null)
+                {
+                    _currentFragment = _previousFragment;
+                    _previousFragment = null;
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.content_frame, _currentFragment);
+                    transaction.commit();
+                }
             }
         });
 
@@ -67,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
             drawer.closeDrawer(GravityCompat.START);
+        }
+        else if (_previousFragment != null) //如果在店家細節時按上一頁則回到店家細節的上一個列表
+        {
+            _currentFragment = _previousFragment;
+            _previousFragment = null;
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.content_frame, _currentFragment);
+            transaction.commit();
         }
         else
         {
@@ -103,6 +119,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
+        //如果在店家細節時切換到別的列表就捨棄按上一頁回到店家細節的上一個列表的機制
+        if (_previousFragment != null)
+        {
+            _previousFragment = null;
+        }
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -203,11 +225,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void DisplayShopDetail(Shop shop)
     {
+        _previousFragment = _currentFragment;
         _currentFragment = new ShopDetail();
         ((ShopDetail) _currentFragment).SetShopData(shop);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
-        transaction.addToBackStack(null); //把這個Fragment的切換推到堆疊最上方
         transaction.commit();
     }
 }
