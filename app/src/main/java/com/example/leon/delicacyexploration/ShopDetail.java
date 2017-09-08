@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.List;
@@ -46,7 +45,7 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
     private boolean _isFavorite;
     private GoogleMap _googleMap;
     private final int MY_LOCATION_REQUEST_CODE = 1;
-    private final String SHOP_IMAGE_URL = "/android/get_image_by_id.php";
+    private final String SHOP_IMAGE_URL = "/android/get_images_by_shop_id.php";
 
     public void SetShopData(Shop data)
     {
@@ -89,8 +88,8 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         viewHolder.mapView.onResume();
         viewHolder.mapView.getMapAsync(this);
 
-        String id = "id=" + Integer.toString(1);
-        String queryURL = getString(R.string.server_ip_address) + SHOP_IMAGE_URL + "?" + id;
+        String shopID = "shop_id=" + Integer.toString(_data.GetID());
+        String queryURL = getString(R.string.server_ip_address) + SHOP_IMAGE_URL + "?" + shopID;
 
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
@@ -211,34 +210,24 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
     @Override
     public void FinishAsyncProcess(String output)
     {
-        Bitmap bitmap;
+        JsonParser jsonParser = new JsonParser();
+        ArrayList<Bitmap> images = jsonParser.ParseShopImage(getActivity(), output);
 
-        try
-        {
-            byte[] encodeByte = Base64.decode(output, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-        }
-        catch(Exception e)
-        {
-            bitmap = null;
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        InitializeImageView(getView(), bitmap);
+        InitializeImageView(getView(), images);
     }
 
-    private void InitializeImageView(View view, Bitmap bitmap)
+    private void InitializeImageView(View view, ArrayList<Bitmap> images)
     {
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
-        for (int i = 0; i < 10; i++)
+        for (int index = 0; index < images.size(); index++)
         {
             ImageView imageView = new ImageView(getActivity());
-            imageView.setImageBitmap(bitmap);
+            imageView.setImageBitmap(images.get(index));
 
             final float scale = getContext().getResources().getDisplayMetrics().density;
-            int pixelsX = (int) (150 * scale + 0.5f);
-            int pixelsY = (int) (281 * scale + 0.5f);
+            int pixelsX = (int) (images.get(index).getWidth() / 2 * scale + 0.5f);
+            int pixelsY = (int) (images.get(index).getHeight() / 2 * scale + 0.5f);
 
             imageView.setLayoutParams(new LinearLayout.LayoutParams(pixelsX, pixelsY));
             layout.addView(imageView);
