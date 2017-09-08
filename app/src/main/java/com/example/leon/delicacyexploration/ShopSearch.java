@@ -110,6 +110,9 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
     //初始化ListView
     private void InitializeListView(View view)
     {
+        TextView welcomeTextView = (TextView) view.findViewById(R.id.welcomeTextView);
+        welcomeTextView.setVisibility(View.GONE);
+
         TextView emptyTextView = (TextView) view.findViewById(R.id.searchEmpty);
         ListView listView = (ListView) view.findViewById(R.id.searchList);
         listView.setEmptyView(emptyTextView);

@@ -4,49 +4,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/shopDetailName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="shopDetailName"
-            android:textSize="24sp" />
+            android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="12dp"
-            android:background="@drawable/ic_star_border_black_24px"
-            android:clickable="true"
-            android:onClick="onClick" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/shopDetailName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="shopDetailName"
+                    android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/shopDetailEvaluation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="shopDetailEvaluation" />
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/ic_star_border_black_24px"
+                    android:clickable="true"
+                    android:onClick="onClick" />
 
-    <TextView
-        android:id="@+id/shopDetailAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="shopDetailAddress" />
+            </RelativeLayout>
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/shopDetailMapView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="40dp"/>
+            <TextView
+                android:id="@+id/shopDetailEvaluation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="shopDetailEvaluation" />
+
+            <TextView
+                android:id="@+id/shopDetailAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="shopDetailAddress" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/shopDetailMapView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="40dp" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

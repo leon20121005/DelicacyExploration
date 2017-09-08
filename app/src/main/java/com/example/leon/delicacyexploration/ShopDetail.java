@@ -3,6 +3,8 @@ package com.example.leon.delicacyexploration;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -10,10 +12,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.SharedPreferences;
@@ -35,12 +40,13 @@ import java.util.Set;
 
 //Created by leon on 2017/8/6.
 
-public class ShopDetail extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback
+public class ShopDetail extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, AsyncResponse
 {
     private Shop _data;
+    private boolean _isFavorite;
     private GoogleMap _googleMap;
     private final int MY_LOCATION_REQUEST_CODE = 1;
-    private boolean _isFavorite;
+    private final String SHOP_IMAGE_URL = "/android/get_image_by_id.php";
 
     public void SetShopData(Shop data)
     {
@@ -82,6 +88,11 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         viewHolder.mapView.onCreate(savedInstanceState);
         viewHolder.mapView.onResume();
         viewHolder.mapView.getMapAsync(this);
+
+        String id = "id=" + Integer.toString(1);
+        String queryURL = getString(R.string.server_ip_address) + SHOP_IMAGE_URL + "?" + id;
+
+        new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
 
     //初始化ImageButton
@@ -194,6 +205,43 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         else
         {
             Toast.makeText(getActivity(), "Can't find location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void FinishAsyncProcess(String output)
+    {
+        Bitmap bitmap;
+
+        try
+        {
+            byte[] encodeByte = Base64.decode(output, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+        }
+        catch(Exception e)
+        {
+            bitmap = null;
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        InitializeImageView(getView(), bitmap);
+    }
+
+    private void InitializeImageView(View view, Bitmap bitmap)
+    {
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayout);
+
+        for (int i = 0; i < 10; i++)
+        {
+            ImageView imageView = new ImageView(getActivity());
+            imageView.setImageBitmap(bitmap);
+
+            final float scale = getContext().getResources().getDisplayMetrics().density;
+            int pixelsX = (int) (150 * scale + 0.5f);
+            int pixelsY = (int) (281 * scale + 0.5f);
+
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(pixelsX, pixelsY));
+            layout.addView(imageView);
         }
     }
 

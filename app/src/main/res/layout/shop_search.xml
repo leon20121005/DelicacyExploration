@@ -4,6 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/welcomeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="輸入關鍵字進行店家搜尋" />
+
     <ListView
         android:id="@+id/searchList"
         android:layout_width="match_parent"
@@ -14,6 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="No results found" />
+        android:text="沒有符合的結果" />
 
 </LinearLayout>
