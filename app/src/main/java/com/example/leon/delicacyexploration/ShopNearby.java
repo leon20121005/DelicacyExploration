@@ -3,6 +3,8 @@ package com.example.leon.delicacyexploration;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -20,7 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.support.annotation.Nullable;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.List;
 
 //Created by leon on 2017/8/30.
 
@@ -56,6 +61,7 @@ public class ShopNearby extends Fragment implements AsyncResponse
 
         InitializeLocation();
         InitializeSpinner(view);
+        InitializeLocationTextView(view);
     }
 
     @Override
@@ -65,31 +71,6 @@ public class ShopNearby extends Fragment implements AsyncResponse
         _shopList = jsonParser.ParseShopList(getActivity(), output);
 
         InitializeListView(getView());
-    }
-
-    private void InitializeLocation()
-    {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {
-            Location currentLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-            if (currentLocation != null)
-            {
-                _latitude = currentLocation.getLatitude();
-                _longitude = currentLocation.getLongitude();
-            }
-        }
-    }
-
-    private void SendQuery()
-    {
-        String latitude = "lat=" + Double.toString(_latitude);
-        String longitude = "lng=" + Double.toString(_longitude);
-        String radius = "radius=" + Double.toString(_queryRange);
-        String limit = "limit=" + Integer.toString(20);
-        String queryURL = getString(R.string.server_ip_address) + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
-
-        new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
 
     //初始化ListView
@@ -112,7 +93,20 @@ public class ShopNearby extends Fragment implements AsyncResponse
         });
 
         Toast.makeText(getActivity(), "顯示附近" + Double.toString(_queryRange) + "公里店家", Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), Double.toString(_latitude) + ", " + Double.toString(_longitude), Toast.LENGTH_SHORT).show();
+    }
+
+    private void InitializeLocation()
+    {
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            Location currentLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+            if (currentLocation != null)
+            {
+                _latitude = currentLocation.getLatitude();
+                _longitude = currentLocation.getLongitude();
+            }
+        }
     }
 
     //初始化Spinner
@@ -164,5 +158,32 @@ public class ShopNearby extends Fragment implements AsyncResponse
             {
             }
         });
+    }
+
+    private void SendQuery()
+    {
+        String latitude = "lat=" + Double.toString(_latitude);
+        String longitude = "lng=" + Double.toString(_longitude);
+        String radius = "radius=" + Double.toString(_queryRange);
+        String limit = "limit=" + Integer.toString(20);
+        String queryURL = getString(R.string.server_ip_address) + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
+
+        new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
+    }
+
+    private void InitializeLocationTextView(View view)
+    {
+        TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
+
+        try
+        {
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> addressList = geocoder.getFromLocation(_latitude, _longitude, 1);
+            locationTextView.setText(addressList.get(0).getAddressLine(0) + " " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
+        }
+        catch (IOException exception)
+        {
+            locationTextView.setText("Unknown address " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
+        }
     }
 }

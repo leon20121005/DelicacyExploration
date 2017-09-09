@@ -25,7 +25,14 @@
     <ListView
         android:id="@+id/nearbyList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="435dp"/>
+
+    <TextView
+        android:id="@+id/locationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="locationTextView" />
 
     <TextView
         android:id="@+id/nearbyEmpty"
