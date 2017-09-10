@@ -1,57 +1,39 @@
 package com.example.leon.delicacyexploration;
 
-import android.preference.EditTextPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.preference.SwitchPreference;
-import android.widget.Toast;
-import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
-public class SettingsActivity extends PreferenceActivity
+public class SettingsActivity extends AppCompatActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preferences);
 
-        SwitchPreference enableCustomIPSwitch = (SwitchPreference) findPreference(getString(R.string.custom_ip_enable_key));
-
-        if (enableCustomIPSwitch != null)
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null)
         {
-            enableCustomIPSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-            {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue)
-                {
-                    boolean isEnableCustomIP = (Boolean) newValue;
-
-                    if (!isEnableCustomIP)
-                    {
-                        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.remove(getString(R.string.custom_ip_key));
-                        editor.apply();
-
-                        EditTextPreference editTextPreference = (EditTextPreference) findPreference(getString(R.string.custom_ip_key));
-                        editTextPreference.setEnabled(false);
-
-                        Toast.makeText(getApplicationContext(), "使用預設伺服器IP", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        EditTextPreference editCustomIPPreference = (EditTextPreference) findPreference(getString(R.string.custom_ip_key));
-                        editCustomIPPreference.setEnabled(true);
-                    }
-                    return true;
-                }
-            });
+            actionBar.setTitle("設定");
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        EditTextPreference editCustomIPPreference = (EditTextPreference) findPreference(getString(R.string.custom_ip_key));
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        editCustomIPPreference.setEnabled(preferences.getBoolean(getString(R.string.custom_ip_enable_key), false));
+        android.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(android.R.id.content, new SettingsFragment());
+        transaction.commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+        {
+            startActivity(new Intent(this, MainActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

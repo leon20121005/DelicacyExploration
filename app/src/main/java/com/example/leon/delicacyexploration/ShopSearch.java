@@ -34,6 +34,7 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
         setHasOptionsMenu(true);
     }
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
