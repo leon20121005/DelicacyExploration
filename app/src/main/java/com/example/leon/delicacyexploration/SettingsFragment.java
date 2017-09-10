@@ -21,6 +21,12 @@ public class SettingsFragment extends PreferenceFragment
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.preferences);
 
+        InitializeSwitchPreference();
+        InitializeEditTextPreference();
+    }
+
+    private void InitializeSwitchPreference()
+    {
         SwitchPreference enableCustomIPSwitch = (SwitchPreference) findPreference(getString(R.string.custom_ip_enable_key));
 
         if (enableCustomIPSwitch != null)
@@ -30,9 +36,9 @@ public class SettingsFragment extends PreferenceFragment
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue)
                 {
-                    boolean isEnableCustomIP = (Boolean) newValue;
+                    boolean isCustomIPEnable = (Boolean) newValue;
 
-                    if (!isEnableCustomIP)
+                    if (!isCustomIPEnable)
                     {
                         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         SharedPreferences.Editor editor = preferences.edit();
@@ -53,9 +59,23 @@ public class SettingsFragment extends PreferenceFragment
                 }
             });
         }
+    }
 
+    private void InitializeEditTextPreference()
+    {
         EditTextPreference editCustomIPPreference = (EditTextPreference) findPreference(getString(R.string.custom_ip_key));
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         editCustomIPPreference.setEnabled(preferences.getBoolean(getString(R.string.custom_ip_enable_key), false));
+        editCustomIPPreference.setSummary(preferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address)));
+
+        editCustomIPPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+        {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue)
+            {
+                preference.setSummary(newValue.toString());
+                return true;
+            }
+        });
     }
 }
