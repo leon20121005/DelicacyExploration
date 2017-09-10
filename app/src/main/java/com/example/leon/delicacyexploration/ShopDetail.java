@@ -1,12 +1,12 @@
 package com.example.leon.delicacyexploration;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -88,18 +88,15 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         viewHolder.mapView.onResume();
         viewHolder.mapView.getMapAsync(this);
 
-        String shopID = "shop_id=" + Integer.toString(_data.GetID());
-        String queryURL = getString(R.string.server_ip_address) + SHOP_IMAGE_URL + "?" + shopID;
-
-        new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
+        SendImageQuery();
     }
 
     //初始化ImageButton
     private void InitializeMyFavoriteButton(final ImageButton imageButton)
     {
         Set<String> defaultShopIDList = new HashSet<>();
-        final SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        final Set<String> favoriteShopIDList = sharedPreferences.getStringSet("FavoriteShopIDList", defaultShopIDList);
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        final Set<String> favoriteShopIDList = sharedPreferences.getStringSet(getString(R.string.favorite_shop_id_key), defaultShopIDList);
         _isFavorite = favoriteShopIDList.contains(Integer.toString(_data.GetID()));
 
         if (_isFavorite)
@@ -134,7 +131,7 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
                     favoriteShopIDList.add(Integer.toString(_data.GetID()));
                     Toast.makeText(getActivity(), "已加入收藏", Toast.LENGTH_SHORT).show();
                 }
-                editor.putStringSet("FavoriteShopIDList", favoriteShopIDList);
+                editor.putStringSet(getString(R.string.favorite_shop_id_key), favoriteShopIDList);
                 editor.apply();
             }
         });
@@ -205,6 +202,16 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         {
             Toast.makeText(getActivity(), "Can't find location", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void SendImageQuery()
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String shopID = "shop_id=" + Integer.toString(_data.GetID());
+        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
+        String queryURL = homeURL + SHOP_IMAGE_URL + "?" + shopID;
+
+        new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.leon.delicacyexploration;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -38,7 +40,10 @@ public class ShopList extends Fragment implements AsyncResponse
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 
-        new HttpRequestAsyncTask((Fragment) this).execute(getString(R.string.server_ip_address) + SHOP_LIST_URL);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
+
+        new HttpRequestAsyncTask((Fragment) this).execute(homeURL + SHOP_LIST_URL);
     }
 
     @Override

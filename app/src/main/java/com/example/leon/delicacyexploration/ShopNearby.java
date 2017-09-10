@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +21,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
 import java.io.IOException;
@@ -162,11 +164,13 @@ public class ShopNearby extends Fragment implements AsyncResponse
 
     private void SendQuery()
     {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String latitude = "lat=" + Double.toString(_latitude);
         String longitude = "lng=" + Double.toString(_longitude);
         String radius = "radius=" + Double.toString(_queryRange);
         String limit = "limit=" + Integer.toString(20);
-        String queryURL = getString(R.string.server_ip_address) + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
+        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
+        String queryURL = homeURL + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
 
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }

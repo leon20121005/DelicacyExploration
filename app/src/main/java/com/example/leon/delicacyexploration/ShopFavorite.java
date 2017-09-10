@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -88,9 +89,9 @@ public class ShopFavorite extends Fragment implements AsyncResponse
 
     private void SendQuery()
     {
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         Set<String> defaultShopIDList = new HashSet<>();
-        Set<String> favoriteShopIDList = sharedPreferences.getStringSet("FavoriteShopIDList", defaultShopIDList);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        Set<String> favoriteShopIDList = sharedPreferences.getStringSet(getString(R.string.favorite_shop_id_key), defaultShopIDList);
 
         //把已收藏的店家ID存到JSON陣列並轉換成字串
         JSONArray jsonArray = new JSONArray();
@@ -107,7 +108,8 @@ public class ShopFavorite extends Fragment implements AsyncResponse
         postData.put("longitude", Double.toString(_longitude));
         postData.put("order", _queryOrder);
 
-        String queryURL = getString(R.string.server_ip_address) + FAVORITE_SHOP_URL;
+        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
+        String queryURL = homeURL + FAVORITE_SHOP_URL;
 
         new HttpRequestAsyncTask((Fragment) this, postData, "POST").execute(queryURL);
     }

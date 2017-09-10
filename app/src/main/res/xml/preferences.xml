@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="伺服器IP位址">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="@string/custom_ip_enable_key"
+            android:title="使用自訂伺服器IP位址" />
+        <EditTextPreference
+            android:defaultValue="@string/server_ip_address"
+            android:key="@string/custom_ip_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="設定IP位址" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

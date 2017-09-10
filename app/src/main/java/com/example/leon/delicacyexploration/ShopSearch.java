@@ -1,6 +1,7 @@
 package com.example.leon.delicacyexploration;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
@@ -71,8 +73,11 @@ public class ShopSearch extends Fragment implements AsyncResponse, SearchView.On
             return false;
         }
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String queryKeyword = "keyword=" + query.trim();
-        String queryURL = getString(R.string.server_ip_address) + SEARCH_SHOP_URL + "?" + queryKeyword;
+        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
+        String queryURL = homeURL + SEARCH_SHOP_URL + "?" + queryKeyword;
+
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
 
         _searchView.clearFocus(); //提交查詢之後關閉鍵盤

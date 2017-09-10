@@ -4,9 +4,21 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">設定</string>
 
     <string name="server_ip_address">
         http://36.231.122.68
+    </string>
+
+    <string name="favorite_shop_id_key">
+        favoriteShopIDList
+    </string>
+
+    <string name="custom_ip_key">
+        customServerIP
+    </string>
+
+    <string name="custom_ip_enable_key">
+        isCustomServerIPEnable
     </string>
 </resources>
