@@ -25,7 +25,6 @@ import android.support.annotation.Nullable;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -83,7 +82,7 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         viewHolder.myFavoriteButton = (ImageButton) view.findViewById(R.id.imageButton);
         InitializeMyFavoriteButton(viewHolder.myFavoriteButton);
 
-        viewHolder.mapView = (MapView) view.findViewById(R.id.shopDetailMapView);
+        viewHolder.mapView = (CustomMapView) view.findViewById(R.id.shopDetailMapView);
         viewHolder.mapView.onCreate(savedInstanceState);
         viewHolder.mapView.onResume();
         viewHolder.mapView.getMapAsync(this);
@@ -247,6 +246,6 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
         TextView shopDetailEvaluation;
         TextView shopDetailAddress;
         ImageButton myFavoriteButton;
-        MapView mapView;
+        CustomMapView mapView;
     }
 }

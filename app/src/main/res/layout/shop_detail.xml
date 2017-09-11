@@ -52,7 +52,7 @@
                 android:padding="8dp"
                 android:text="shopDetailAddress" />
 
-            <com.google.android.gms.maps.MapView
+            <com.example.leon.delicacyexploration.CustomMapView
                 android:id="@+id/shopDetailMapView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
