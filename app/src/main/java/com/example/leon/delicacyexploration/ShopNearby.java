@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.io.IOException;
@@ -36,6 +38,7 @@ public class ShopNearby extends Fragment implements AsyncResponse
     private final String NEARBY_SHOP_URL = "/android/get_nearby_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
 
+    private final int MY_LOCATION_REQUEST_CODE = 1;
     private double _latitude;
     private double _longitude;
 
@@ -94,7 +97,10 @@ public class ShopNearby extends Fragment implements AsyncResponse
             }
         });
 
-        Toast.makeText(getActivity(), "顯示附近" + Double.toString(_queryRange) + "公里店家", Toast.LENGTH_SHORT).show();
+        if (_shopList.size() != 0)
+        {
+            Toast.makeText(getActivity(), "顯示附近" + Double.toString(_queryRange) + "公里店家", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void InitializeLocation()
@@ -107,6 +113,28 @@ public class ShopNearby extends Fragment implements AsyncResponse
             {
                 _latitude = currentLocation.getLatitude();
                 _longitude = currentLocation.getLongitude();
+            }
+        }
+        else
+        {
+            // Show rationale and request permission
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
+        }
+    }
+
+    //處理Activity的onRequestPermissionsResult()
+    public void OnRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        if (requestCode == MY_LOCATION_REQUEST_CODE)
+        {
+            if (permissions.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                InitializeLocation();
+            }
+            else
+            {
+                // Permission was denied. Display an error message.
+                Toast.makeText(getActivity(), "No permission to initialize location", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -185,7 +213,7 @@ public class ShopNearby extends Fragment implements AsyncResponse
             List<Address> addressList = geocoder.getFromLocation(_latitude, _longitude, 1);
             locationTextView.setText(addressList.get(0).getAddressLine(0) + " " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
         }
-        catch (IOException exception)
+        catch (IOException | IndexOutOfBoundsException exception)
         {
             locationTextView.setText("Unknown address " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
         }

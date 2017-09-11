@@ -183,6 +183,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             ((ShopDetail) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        else if (_currentFragment.getClass() == ShopNearby.class)
+        {
+            ((ShopNearby) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void DisplayShopList()
