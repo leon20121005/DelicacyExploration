@@ -8,13 +8,17 @@ public class Shop
     private String _name;
     private String _evaluation;
     private String _address;
+    private double _latitude;
+    private double _longitude;
 
-    public Shop(int id, String name, String evaluation, String address)
+    public Shop(int id, String name, String evaluation, String address, double latitude, double longitude)
     {
         _id = id;
         _name = name;
         _evaluation = evaluation;
         _address = address;
+        _latitude = latitude;
+        _longitude = longitude;
     }
 
     public int GetID()
@@ -35,5 +39,15 @@ public class Shop
     public String GetAddress()
     {
         return _address;
+    }
+
+    public double GetLatitude()
+    {
+        return _latitude;
+    }
+
+    public double GetLongitude()
+    {
+        return _longitude;
     }
 }

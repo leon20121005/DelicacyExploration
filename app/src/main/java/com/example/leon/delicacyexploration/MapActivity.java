@@ -3,8 +3,6 @@ package com.example.leon.delicacyexploration;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -35,10 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.List;
 
 public class MapActivity extends AppCompatActivity implements AsyncResponse, OnMapReadyCallback
 {
@@ -198,40 +193,17 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
-                Geocoder geocoder = new Geocoder(getApplication(), Locale.getDefault());
-                List<Address> addressList = null;
-
-                try
-                {
-                    addressList = geocoder.getFromLocationName(_shopList.get(position).GetAddress(), 1);
-                }
-                catch (IOException ioException)
-                {
-                    ioException.printStackTrace();
-                }
-
-                if (addressList != null && addressList.size() != 0)
-                {
-                    HighLightShop(new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude()));
-                }
-                else
-                {
-                    Toast.makeText(getApplication(), "Can't find location", Toast.LENGTH_SHORT).show();
-                }
+                HighLightShop(_shopList.get(position));
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
             }
         });
-
-        if (_shopList.size() != 0)
-        {
-            Toast.makeText(this, "顯示附近" + Double.toString(_queryRange) + "公里店家", Toast.LENGTH_SHORT).show();
-        }
     }
 
-    private void HighLightShop(LatLng latLng)
+    private void HighLightShop(Shop shop)
     {
+        LatLng latLng = new LatLng(shop.GetLatitude(), shop.GetLongitude());
         _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
     }
 
@@ -270,23 +242,8 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
             {
                 for (int index = 0; index < _shopList.size(); index++)
                 {
-                    Geocoder geocoder = new Geocoder(getApplication(), Locale.getDefault());
-                    List<Address> addressList = null;
-
-                    try
-                    {
-                        addressList = geocoder.getFromLocationName(_shopList.get(index).GetAddress(), 1);
-                    }
-                    catch (IOException ioException)
-                    {
-                        ioException.printStackTrace();
-                    }
-
-                    if (addressList != null && addressList.size() != 0)
-                    {
-                        LatLng latLng = new LatLng(addressList.get(0).getLatitude(), addressList.get(0).getLongitude());
-                        _googleMap.addMarker(new MarkerOptions().position(latLng).title(_shopList.get(index).GetName()));
-                    }
+                    LatLng latLng = new LatLng(_shopList.get(index).GetLatitude(), _shopList.get(index).GetLongitude());
+                    _googleMap.addMarker(new MarkerOptions().position(latLng).title(_shopList.get(index).GetName()));
                 }
             }
         });

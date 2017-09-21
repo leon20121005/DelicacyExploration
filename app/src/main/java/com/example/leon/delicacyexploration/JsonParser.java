@@ -43,8 +43,10 @@ public class JsonParser
                     String shopName = tupleJSON.getString("name");
                     String shopEvaluation = Integer.toString(tupleJSON.getInt("evaluation"));
                     String shopAddress = tupleJSON.getString("address");
+                    double latitude = tupleJSON.getDouble("latitude");
+                    double longitude = tupleJSON.getDouble("longitude");
 
-                    shopList.add(new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress));
+                    shopList.add(new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress, latitude, longitude));
                 }
             }
             else
