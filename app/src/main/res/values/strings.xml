@@ -7,7 +7,7 @@
     <string name="action_settings">設定</string>
 
     <string name="server_ip_address">
-        http://36.231.109.115
+        http://36.231.105.206
     </string>
 
     <string name="favorite_shop_id_key">
@@ -21,4 +21,6 @@
     <string name="custom_ip_enable_key">
         isCustomServerIPEnable
     </string>
+
+    <string name="title_activity_map">店家地圖</string>
 </resources>
