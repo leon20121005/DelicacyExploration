@@ -182,8 +182,8 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
     @Override
     public void FinishAsyncProcess(String output)
     {
-        JsonParser jsonParser = new JsonParser();
-        _shopList = jsonParser.ParseShopList(this, output);
+        JsonParser jsonParser = new JsonParser(this);
+        _shopList = jsonParser.ParseShopList(output);
 
         InitializeListView();
     }

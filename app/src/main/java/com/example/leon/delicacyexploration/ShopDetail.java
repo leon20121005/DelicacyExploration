@@ -216,8 +216,8 @@ public class ShopDetail extends Fragment implements OnMapReadyCallback, Activity
     @Override
     public void FinishAsyncProcess(String output)
     {
-        JsonParser jsonParser = new JsonParser();
-        ArrayList<Bitmap> images = jsonParser.ParseShopImage(getActivity(), output);
+        JsonParser jsonParser = new JsonParser(getActivity());
+        ArrayList<Bitmap> images = jsonParser.ParseShopImage(output);
 
         InitializeImageView(getView(), images);
     }

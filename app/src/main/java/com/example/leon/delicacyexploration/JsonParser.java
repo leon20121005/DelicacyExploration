@@ -16,11 +16,14 @@ import java.util.ArrayList;
 
 public class JsonParser
 {
-    public JsonParser()
+    private Context _context;
+
+    public JsonParser(Context context)
     {
+        _context = context;
     }
 
-    public ArrayList<Shop> ParseShopList(Context context, String jsonText)
+    public ArrayList<Shop> ParseShopList(String jsonText)
     {
         ArrayList<Shop> shopList = new ArrayList<>();
         JSONObject jsonObject;
@@ -51,7 +54,7 @@ public class JsonParser
             }
             else
             {
-                Toast.makeText(context, "No shops found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(_context, "No shops found", Toast.LENGTH_SHORT).show();
             }
         }
         catch (JSONException exception)
@@ -62,7 +65,7 @@ public class JsonParser
         return shopList;
     }
 
-    public ArrayList<Bitmap> ParseShopImage(Context context, String jsonText)
+    public ArrayList<Bitmap> ParseShopImage(String jsonText)
     {
         ArrayList<Bitmap> imageList = new ArrayList<>();
         JSONObject jsonObject;
@@ -89,10 +92,10 @@ public class JsonParser
                         byte[] encodeByte = Base64.decode(imageData, Base64.DEFAULT);
                         bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
                     }
-                    catch(Exception e)
+                    catch(Exception exception)
                     {
                         bitmap = null;
-                        Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(_context, exception.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                     imageList.add(bitmap);
@@ -100,7 +103,7 @@ public class JsonParser
             }
             else
             {
-                Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(_context, "No images found", Toast.LENGTH_SHORT).show();
             }
         }
         catch (JSONException exception)

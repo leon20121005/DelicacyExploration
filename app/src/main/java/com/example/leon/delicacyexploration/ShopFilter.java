@@ -126,8 +126,8 @@ public class ShopFilter extends Fragment implements AsyncResponse, SearchView.On
     @Override
     public void FinishAsyncProcess(String output)
     {
-        JsonParser jsonParser = new JsonParser();
-        _shopList = jsonParser.ParseShopList(getActivity(), output);
+        JsonParser jsonParser = new JsonParser(getActivity());
+        _shopList = jsonParser.ParseShopList(output);
 
         InitializeListView(getView());
     }
