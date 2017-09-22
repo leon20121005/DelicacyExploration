@@ -2,6 +2,7 @@ package com.example.leon.delicacyexploration;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -146,8 +147,14 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        if (id == R.id.action_list) //如果按下ActionBar上面的List按鈕就返回MainActivity的ShopNearby
         {
+            onBackPressed();
+            return true;
+        }
+        else if (id == R.id.action_settings)
+        {
+            startActivity(new Intent(MapActivity.this, SettingsActivity.class));
             return true;
         }
 
