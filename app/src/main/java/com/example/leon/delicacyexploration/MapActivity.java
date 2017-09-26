@@ -30,7 +30,9 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
@@ -50,6 +52,9 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
 
     private MapView _mapView;
     private GoogleMap _googleMap;
+
+    private ArrayList<Marker> _markerList = new ArrayList<>();
+    private Marker _previousMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -200,7 +205,7 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
-                HighLightShop(_shopList.get(position));
+                HighLightShop(position);
 
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
@@ -208,17 +213,35 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
         });
     }
 
-    private void HighLightShop(Shop shop)
+    private void HighLightShop(int position)
     {
-        LatLng latLng = new LatLng(shop.GetLatitude(), shop.GetLongitude());
-        _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+        LatLng latLng = new LatLng(_shopList.get(position).GetLatitude(), _shopList.get(position).GetLongitude());
+        _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+
+        if (_previousMarker != null)
+        {
+            _previousMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
+        _previousMarker = _markerList.get(position);
+        _markerList.get(position).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        _markerList.get(position).showInfoWindow();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
         _googleMap = googleMap;
-        _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(_latitude, _longitude), 17));
+        _googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker marker)
+            {
+                HighLightShop(_markerList.indexOf(marker));
+                return true;
+            }
+        });
+
+        _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(_latitude, _longitude), 16));
         EnableMyLocation();
         PositioningAddress();
     }
@@ -250,7 +273,8 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
                 for (int index = 0; index < _shopList.size(); index++)
                 {
                     LatLng latLng = new LatLng(_shopList.get(index).GetLatitude(), _shopList.get(index).GetLongitude());
-                    _googleMap.addMarker(new MarkerOptions().position(latLng).title(_shopList.get(index).GetName()));
+                    Marker marker = _googleMap.addMarker(new MarkerOptions().position(latLng).title(_shopList.get(index).GetName()).snippet(_shopList.get(index).GetAddress()));
+                    _markerList.add(marker);
                 }
             }
         });
