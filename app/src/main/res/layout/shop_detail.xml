@@ -22,7 +22,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="shopDetailName"
+                    android:text="@string/default_shop_name"
                     android:textSize="24sp" />
 
                 <ImageButton
@@ -43,14 +43,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="shopDetailEvaluation" />
+                android:text="@string/default_shop_evaluation" />
 
             <TextView
                 android:id="@+id/shopDetailAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="shopDetailAddress" />
+                android:text="@string/default_shop_address" />
 
             <com.example.leon.delicacyexploration.CustomMapView
                 android:id="@+id/shopDetailMapView"
