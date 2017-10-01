@@ -9,7 +9,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="8dp"
-        android:background="@drawable/ic_camera_alt_black_24px" />
+        android:src="@drawable/ic_camera_alt_gray_24px"
+        android:padding="8dp" />
 
     <LinearLayout
         android:orientation="vertical"
