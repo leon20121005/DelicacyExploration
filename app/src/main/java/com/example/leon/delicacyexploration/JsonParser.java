@@ -44,7 +44,7 @@ public class JsonParser
 
                     int shopID = tupleJSON.getInt("id");
                     String shopName = tupleJSON.getString("name");
-                    String shopEvaluation = Integer.toString(tupleJSON.getInt("evaluation"));
+                    String shopEvaluation = Double.toString(tupleJSON.getDouble("evaluation"));
                     String shopAddress = tupleJSON.getString("address");
                     double latitude = tupleJSON.getDouble("latitude");
                     double longitude = tupleJSON.getDouble("longitude");

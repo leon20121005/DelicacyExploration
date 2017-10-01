@@ -21,9 +21,10 @@
                     android:id="@+id/shopDetailName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
                     android:padding="8dp"
                     android:text="@string/default_shop_name"
-                    android:textSize="24sp" />
+                    android:textSize="20sp" />
 
                 <ImageButton
                     android:id="@+id/imageButton"
@@ -42,6 +43,7 @@
                 android:id="@+id/shopDetailEvaluation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:padding="8dp"
                 android:text="@string/default_shop_evaluation" />
 
@@ -49,6 +51,7 @@
                 android:id="@+id/shopDetailAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:padding="8dp"
                 android:text="@string/default_shop_address" />
 
