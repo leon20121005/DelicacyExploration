@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DisplayShopList();
+        DisplayHome();
     }
 
     @Override
@@ -130,7 +130,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_shop_list)
+        if (id == R.id.nav_home)
+        {
+            DisplayHome();
+        }
+        else if (id == R.id.nav_shop_list)
         {
             DisplayShopList();
         }
@@ -187,6 +191,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             ((ShopNearby) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    private void DisplayHome()
+    {
+        _currentFragment = new Home();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.commit();
     }
 
     private void DisplayShopList()
