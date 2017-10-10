@@ -37,7 +37,7 @@ import java.util.List;
 
 //Created by leon on 2017/8/30.
 
-public class ShopNearby extends Fragment implements AsyncResponse
+public class ShopNearbyFragment extends Fragment implements AsyncResponse
 {
     private final String NEARBY_SHOP_URL = "/android/get_nearby_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();

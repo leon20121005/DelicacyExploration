@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 //Created by leon on 2017/9/3.
 
-public class ShopSearch extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
+public class ShopSearchFragment extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
 {
     private final String SEARCH_SHOP_URL = "/android/search_shops.php";
     private SearchView _searchView;

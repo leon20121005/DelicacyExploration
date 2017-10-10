@@ -38,7 +38,7 @@ import java.util.Set;
 
 //Created by leon on 2017/8/6.
 
-public class ShopDetail extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, AsyncResponse
+public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, AsyncResponse
 {
     private Shop _data;
     private boolean _isFavorite;

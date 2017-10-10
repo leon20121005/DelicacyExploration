@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 //Created by leon on 2017/8/22.
 
-public class ShopFilter extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
+public class ShopFilterFragment extends Fragment implements AsyncResponse, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener
 {
     private final String SHOP_LIST_URL = "/android/get_all_shops.php";
     private ArrayList<Shop> _shopList;

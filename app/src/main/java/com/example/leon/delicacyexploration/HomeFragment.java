@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 
 //Created by leon on 2017/10/9.
 
-public class Home extends Fragment
+public class HomeFragment extends Fragment
 {
     @Nullable
     @Override

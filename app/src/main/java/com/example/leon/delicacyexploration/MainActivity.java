@@ -183,19 +183,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
-        if (_currentFragment.getClass() == ShopDetail.class)
+        if (_currentFragment.getClass() == ShopDetailFragment.class)
         {
-            ((ShopDetail) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ((ShopDetailFragment) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-        else if (_currentFragment.getClass() == ShopNearby.class)
+        else if (_currentFragment.getClass() == ShopNearbyFragment.class)
         {
-            ((ShopNearby) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ((ShopNearbyFragment) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     private void DisplayHome()
     {
-        _currentFragment = new Home();
+        _currentFragment = new HomeFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplayShopList()
     {
-        _currentFragment = new ShopList();
+        _currentFragment = new ShopListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplayFilterShop()
     {
-        _currentFragment = new ShopFilter();
+        _currentFragment = new ShopFilterFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplayNearbyShop()
     {
-        _currentFragment = new ShopNearby();
+        _currentFragment = new ShopNearbyFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplaySearchShop()
     {
-        _currentFragment = new ShopSearch();
+        _currentFragment = new ShopSearchFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void DisplayFavoriteShop()
     {
-        _currentFragment = new ShopFavorite();
+        _currentFragment = new ShopFavoriteFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
@@ -244,8 +244,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void DisplayShopDetail(Shop shop)
     {
         _previousFragment = _currentFragment;
-        _currentFragment = new ShopDetail();
-        ((ShopDetail) _currentFragment).SetShopData(shop);
+        _currentFragment = new ShopDetailFragment();
+        ((ShopDetailFragment) _currentFragment).SetShopData(shop);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();

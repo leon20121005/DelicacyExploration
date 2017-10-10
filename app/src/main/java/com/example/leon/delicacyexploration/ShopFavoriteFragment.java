@@ -30,7 +30,7 @@ import java.util.Set;
 
 //Created by leon on 2017/9/5.
 
-public class ShopFavorite extends Fragment implements AsyncResponse
+public class ShopFavoriteFragment extends Fragment implements AsyncResponse
 {
     private final String FAVORITE_SHOP_URL = "/android/get_favorite_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();

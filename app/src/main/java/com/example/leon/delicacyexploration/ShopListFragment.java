@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 //Created by leon on 2017/8/6.
 
-public class ShopList extends Fragment implements AsyncResponse
+public class ShopListFragment extends Fragment implements AsyncResponse
 {
     private final String SHOP_LIST_URL = "/android/get_all_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
