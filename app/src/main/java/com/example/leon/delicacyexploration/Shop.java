@@ -10,8 +10,9 @@ public class Shop
     private String _address;
     private double _latitude;
     private double _longitude;
+    private String _thumbLink;
 
-    public Shop(int id, String name, String evaluation, String address, double latitude, double longitude)
+    public Shop(int id, String name, String evaluation, String address, double latitude, double longitude, String thumbLink)
     {
         _id = id;
         _name = name;
@@ -19,6 +20,7 @@ public class Shop
         _address = address;
         _latitude = latitude;
         _longitude = longitude;
+        _thumbLink = thumbLink;
     }
 
     public int GetID()
@@ -49,5 +51,10 @@ public class Shop
     public double GetLongitude()
     {
         return _longitude;
+    }
+
+    public String GetThumbLink()
+    {
+        return _thumbLink;
     }
 }

@@ -23,6 +23,7 @@ public class JsonParser
         _context = context;
     }
 
+    //解析JSON文字檔並將內容存入ArrayList<Shop>
     public ArrayList<Shop> ParseShopList(String jsonText)
     {
         ArrayList<Shop> shopList = new ArrayList<>();
@@ -48,8 +49,9 @@ public class JsonParser
                     String shopAddress = tupleJSON.getString("address");
                     double latitude = tupleJSON.getDouble("latitude");
                     double longitude = tupleJSON.getDouble("longitude");
+                    String thumbLink = tupleJSON.getString("thumbnail");
 
-                    shopList.add(new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress, latitude, longitude));
+                    shopList.add(new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress, latitude, longitude, thumbLink));
                 }
             }
             else
@@ -65,6 +67,7 @@ public class JsonParser
         return shopList;
     }
 
+    //解析JSON文字檔並將內容存入ArrayList<Bitmap>
     public ArrayList<Bitmap> ParseShopImage(String jsonText)
     {
         ArrayList<Bitmap> imageList = new ArrayList<>();

@@ -1,24 +1,30 @@
 package com.example.leon.delicacyexploration;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 //Created by leon on 2017/8/5.
 
 public class ShopListAdapter extends ArrayAdapter<Shop>
 {
+    private final Map<String, Bitmap> _bitmapCache;
     private Context _context;
 
     public ShopListAdapter(Context context, ArrayList<Shop> shopList)
     {
         super(context, R.layout.shoplist_item, shopList); //第二個參數為ListView內每個元素的layout
+        _bitmapCache = new HashMap<>();
         _context = context;
     }
 
@@ -38,6 +44,7 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
             viewHolder.shopName = (TextView) convertView.findViewById(R.id.shopName);
             viewHolder.shopEvaluation = (TextView) convertView.findViewById(R.id.shopEvaluation);
             viewHolder.shopAddress = (TextView) convertView.findViewById(R.id.shopAddress);
+            viewHolder.shopImage = (ImageView) convertView.findViewById(R.id.shopImage);
 
             convertView.setTag(viewHolder);
         }
@@ -50,6 +57,20 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
         viewHolder.shopEvaluation.setText(shop.GetEvaluation()); //設定ListView內每個元素的商店評價
         viewHolder.shopAddress.setText(shop.GetAddress()); //設定ListView內每個元素的商店地址
 
+        String url = shop.GetThumbLink();
+        if (!url.equals("null"))
+        {
+            Bitmap bitmap = _bitmapCache.get(url);
+            if (bitmap == null)
+            {
+                (new ImageDownloaderAsyncTask(viewHolder.shopImage, _bitmapCache)).execute(url);
+            }
+            else
+            {
+                viewHolder.shopImage.setImageBitmap(bitmap);
+            }
+        }
+
         return convertView;
     }
 
@@ -58,5 +79,6 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
         TextView shopName;
         TextView shopEvaluation;
         TextView shopAddress;
+        ImageView shopImage;
     }
 }
