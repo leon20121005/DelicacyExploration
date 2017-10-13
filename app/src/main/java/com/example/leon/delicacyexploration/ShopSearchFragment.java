@@ -48,8 +48,6 @@ public class ShopSearchFragment extends Fragment implements AsyncResponse, Searc
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("店家搜尋");
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.show();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
     }

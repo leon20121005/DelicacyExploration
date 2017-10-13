@@ -26,8 +26,6 @@ public class HomeFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(getString(R.string.app_name));
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.show();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
     }

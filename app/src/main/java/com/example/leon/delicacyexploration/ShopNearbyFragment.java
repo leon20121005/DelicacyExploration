@@ -70,8 +70,6 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("附近店家");
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.show();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 

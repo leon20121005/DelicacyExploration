@@ -52,8 +52,6 @@ public class ShopFilterFragment extends Fragment implements AsyncResponse, Searc
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("店家過濾");
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.show();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 

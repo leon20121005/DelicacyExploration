@@ -67,8 +67,6 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("店家資訊");
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.hide();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.show();
 

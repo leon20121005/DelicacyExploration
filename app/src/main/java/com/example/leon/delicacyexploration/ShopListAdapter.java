@@ -56,6 +56,7 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
         viewHolder.shopName.setText(shop.GetName()); //設定ListView內每個元素的商店名字
         viewHolder.shopEvaluation.setText(shop.GetEvaluation()); //設定ListView內每個元素的商店評價
         viewHolder.shopAddress.setText(shop.GetAddress()); //設定ListView內每個元素的商店地址
+        viewHolder.shopImage.setImageResource(R.drawable.ic_camera_alt_gray_24px); //設定ImageView預設的圖片
 
         String url = shop.GetThumbLink();
         if (!url.equals("null"))

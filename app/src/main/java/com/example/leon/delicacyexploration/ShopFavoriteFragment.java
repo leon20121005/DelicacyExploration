@@ -55,8 +55,6 @@ public class ShopFavoriteFragment extends Fragment implements AsyncResponse
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("我的最愛");
 
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.show();
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
 
