@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -35,8 +36,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MapActivity extends AppCompatActivity implements AsyncResponse, OnMapReadyCallback
+public class MapActivity extends AppCompatActivity implements AsyncResponse, OnMapReadyCallback, BitmapCacheManager
 {
     private final String NEARBY_SHOP_URL = "/android/get_nearby_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
@@ -53,6 +56,8 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
 
     private ArrayList<Marker> _markerList = new ArrayList<>();
     private Marker _previousMarker;
+
+    private Map<String, Bitmap> _bitmapCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,6 +80,8 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
         _mapView.onCreate(savedInstanceState);
         _mapView.onResume();
         _mapView.getMapAsync(this);
+
+        _bitmapCache = new HashMap<>();
     }
 
     private void InitializeLocation()
@@ -266,5 +273,10 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
                 }
             }
         });
+    }
+
+    public Map<String, Bitmap> GetBitmapCache()
+    {
+        return _bitmapCache;
     }
 }

@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 //Created by leon on 2017/8/5.
@@ -24,7 +23,7 @@ public class ShopListAdapter extends ArrayAdapter<Shop>
     public ShopListAdapter(Context context, ArrayList<Shop> shopList)
     {
         super(context, R.layout.shoplist_item, shopList); //第二個參數為ListView內每個元素的layout
-        _bitmapCache = new HashMap<>();
+        _bitmapCache = ((BitmapCacheManager) context).GetBitmapCache();
         _context = context;
     }
 

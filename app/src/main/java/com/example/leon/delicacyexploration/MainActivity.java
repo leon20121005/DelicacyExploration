@@ -1,6 +1,7 @@
 package com.example.leon.delicacyexploration;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,10 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.annotation.NonNull;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+import java.util.HashMap;
+import java.util.Map;
+
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BitmapCacheManager
 {
     private Fragment _previousFragment;
     private Fragment _currentFragment;
+    private Map<String, Bitmap> _bitmapCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        _bitmapCache = new HashMap<>();
 
         DisplayHome();
     }
@@ -237,5 +244,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
+    }
+
+    public Map<String, Bitmap> GetBitmapCache()
+    {
+        return _bitmapCache;
     }
 }
