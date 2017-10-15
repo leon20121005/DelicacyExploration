@@ -1,6 +1,7 @@
 package com.example.leon.delicacyexploration;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -14,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +88,16 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
         viewHolder.mapView.getMapAsync(this);
 
         SendImageQuery();
+
+        Button button = (Button) view.findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(getActivity(), BlogViewerActivity.class));
+            }
+        });
     }
 
     //初始化ImageButton
