@@ -16,7 +16,6 @@ public class SettingsActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
         {
-            actionBar.setTitle("設定");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 

@@ -33,7 +33,7 @@ public class ShopListFragment extends Fragment implements AsyncResponse
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("店家列表");
+        getActivity().setTitle(getString(R.string.title_fragment_list));
 
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();

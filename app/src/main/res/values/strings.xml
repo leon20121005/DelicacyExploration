@@ -15,9 +15,17 @@
     <string name="custom_ip_key">customServerIP</string>
     <string name="custom_ip_enable_key">isCustomServerIPEnable</string>
 
+    <string name="title_activity_settings">設定</string>
     <string name="title_activity_map">店家地圖</string>
+    <string name="title_activity_about">關於</string>
 
     <string name="default_shop_name">default_shop_name</string>
     <string name="default_shop_evaluation">default_shop_evaluation</string>
     <string name="default_shop_address">default_shop_address</string>
+
+    <string name="title_fragment_home">首頁</string>
+    <string name="title_fragment_list">店家列表</string>
+    <string name="title_fragment_nearby">附近店家</string>
+    <string name="title_fragment_search">店家搜尋</string>
+    <string name="title_fragment_favorite">我的最愛</string>
 </resources>
