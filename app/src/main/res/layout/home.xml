@@ -43,8 +43,8 @@
             android:drawableEnd="@drawable/search_button_icon"
             android:padding="24dp"
             android:text="店家搜尋"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/favorite_button"
@@ -55,6 +55,18 @@
             android:drawableEnd="@drawable/star_border_button_icon"
             android:padding="24dp"
             android:text="我的最愛"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/about_button"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFEE58"
+            android:drawableEnd="@drawable/info_button_icon"
+            android:padding="24dp"
+            android:text="關於"
             android:textSize="20sp"
             android:textColor="#FFFFFF" />
 
