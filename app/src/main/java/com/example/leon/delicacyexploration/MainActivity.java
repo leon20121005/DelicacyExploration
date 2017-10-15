@@ -197,40 +197,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    private void DisplayShopList()
+    public void DisplayShopList()
     {
+        _previousFragment = _currentFragment;
         _currentFragment = new ShopListFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
     }
 
-    private void DisplayFilterShop()
+    public void DisplayFilterShop()
     {
+        _previousFragment = _currentFragment;
         _currentFragment = new ShopFilterFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
     }
 
-    private void DisplayNearbyShop()
+    public void DisplayNearbyShop()
     {
+        _previousFragment = _currentFragment;
         _currentFragment = new ShopNearbyFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
     }
 
-    private void DisplaySearchShop()
+    public void DisplaySearchShop()
     {
+        _previousFragment = _currentFragment;
         _currentFragment = new ShopSearchFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);
         transaction.commit();
     }
 
-    private void DisplayFavoriteShop()
+    public void DisplayFavoriteShop()
     {
+        _previousFragment = _currentFragment;
         _currentFragment = new ShopFavoriteFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, _currentFragment);

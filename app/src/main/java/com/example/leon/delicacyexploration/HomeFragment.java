@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.support.annotation.Nullable;
 
 //Created by leon on 2017/10/9.
@@ -23,10 +24,58 @@ public class HomeFragment extends Fragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
     {
+        ViewHolder viewHolder = new ViewHolder();
+
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle(getString(R.string.app_name));
 
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
+
+        viewHolder.listButton = (Button) view.findViewById(R.id.list_button);
+        viewHolder.nearbyButton = (Button) view.findViewById(R.id.nearby_button);
+        viewHolder.searchButton = (Button) view.findViewById(R.id.search_button);
+        viewHolder.favoriteButton = (Button) view.findViewById(R.id.favorite_button);
+
+        viewHolder.listButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ((MainActivity) getActivity()).DisplayShopList();
+            }
+        });
+        viewHolder.nearbyButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ((MainActivity) getActivity()).DisplayNearbyShop();
+            }
+        });
+        viewHolder.searchButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ((MainActivity) getActivity()).DisplaySearchShop();
+            }
+        });
+        viewHolder.favoriteButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ((MainActivity) getActivity()).DisplayFavoriteShop();
+            }
+        });
+    }
+
+    private static class ViewHolder
+    {
+        Button listButton;
+        Button nearbyButton;
+        Button searchButton;
+        Button favoriteButton;
     }
 }
