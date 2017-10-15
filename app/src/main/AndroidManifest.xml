@@ -47,6 +47,10 @@
             android:name=".BlogViewerActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.leon.delicacyexploration;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment
         viewHolder.nearbyButton = (Button) view.findViewById(R.id.nearby_button);
         viewHolder.searchButton = (Button) view.findViewById(R.id.search_button);
         viewHolder.favoriteButton = (Button) view.findViewById(R.id.favorite_button);
+        viewHolder.aboutButton = (Button) view.findViewById(R.id.about_button);
 
         viewHolder.listButton.setOnClickListener(new View.OnClickListener()
         {
@@ -69,6 +71,14 @@ public class HomeFragment extends Fragment
                 ((MainActivity) getActivity()).DisplayFavoriteShop();
             }
         });
+        viewHolder.aboutButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                startActivity(new Intent(getActivity(), AboutActivity.class));
+            }
+        });
     }
 
     private static class ViewHolder
@@ -77,5 +87,6 @@ public class HomeFragment extends Fragment
         Button nearbyButton;
         Button searchButton;
         Button favoriteButton;
+        Button aboutButton;
     }
 }

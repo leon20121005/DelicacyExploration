@@ -28,4 +28,8 @@
     <string name="title_fragment_nearby">附近店家</string>
     <string name="title_fragment_search">店家搜尋</string>
     <string name="title_fragment_favorite">我的最愛</string>
+
+    <string name="about_content">
+        \n更新日期: 2017/10/15\n\n資料來源: 痞客邦PIXNET
+    </string>
 </resources>
