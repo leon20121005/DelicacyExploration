@@ -50,8 +50,20 @@ public class JsonParser
                     double latitude = tupleJSON.getDouble("latitude");
                     double longitude = tupleJSON.getDouble("longitude");
                     String thumbLink = tupleJSON.getString("thumbnail");
+                    String commentLink = tupleJSON.getString("comment");
 
-                    shopList.add(new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress, latitude, longitude, thumbLink));
+                    if (shopList.size() != 0)
+                    {
+                        Shop previousShop = shopList.get(shopList.size() - 1);
+                        if (shopID == previousShop.GetID())
+                        {
+                            previousShop.AddCommentLink(commentLink);
+                            continue;
+                        }
+                    }
+                    Shop currentShop = new Shop(shopID, shopName, "評價分數: " + shopEvaluation + "/10", shopAddress, latitude, longitude, thumbLink);
+                    currentShop.AddCommentLink(commentLink);
+                    shopList.add(currentShop);
                 }
             }
             else
@@ -63,7 +75,6 @@ public class JsonParser
         {
             exception.printStackTrace();
         }
-
         return shopList;
     }
 
@@ -113,7 +124,6 @@ public class JsonParser
         {
             exception.printStackTrace();
         }
-
         return imageList;
     }
 }

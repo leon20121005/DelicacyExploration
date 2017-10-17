@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E0E0E0">
@@ -63,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
-            android:background="#FFEE58"
+            android:background="#FDD835"
             android:drawableEnd="@drawable/info_button_icon"
             android:padding="24dp"
             android:text="@string/title_activity_about"

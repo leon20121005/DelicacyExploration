@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import java.util.Set;
 
 public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, ActivityCompat.OnRequestPermissionsResultCallback, AsyncResponse
 {
+    public static final String COMMENT_URL_KEY = "comment_url";
     private Shop _data;
     private boolean _isFavorite;
     private GoogleMap _googleMap;
@@ -89,15 +91,7 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
 
         SendImageQuery();
 
-        Button button = (Button) view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                startActivity(new Intent(getActivity(), BlogViewerActivity.class));
-            }
-        });
+        InitializeBlogButton(view);
     }
 
     //初始化ImageButton
@@ -223,6 +217,35 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
     }
 
+    private void InitializeBlogButton(View view)
+    {
+        LinearLayout buttonLayout = (LinearLayout) view.findViewById(R.id.buttonLayout);
+
+        for (int index = 0; index < _data.GetCommentLinkList().size(); index++)
+        {
+            final String url = _data.GetCommentLinkList().get(index);
+            Button button = new Button(getActivity());
+            button.setBackgroundColor(Color.parseColor("#A5D6A7"));
+            button.setText("View " + ParseUserID(url) + "'s Blog");
+            button.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    Intent intent = new Intent(getActivity(), BlogViewerActivity.class);
+                    intent.putExtra(COMMENT_URL_KEY, url);
+                    startActivity(intent);
+                }
+            });
+            buttonLayout.addView(button);
+        }
+    }
+
+    private String ParseUserID(String url)
+    {
+        return url.substring(url.indexOf("/") + 2, url.indexOf("."));
+    }
+
     @Override
     public void FinishAsyncProcess(String output)
     {
@@ -234,7 +257,7 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
 
     private void InitializeImageView(View view, ArrayList<Bitmap> images)
     {
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.linearLayout);
+        LinearLayout layout = (LinearLayout) view.findViewById(R.id.imageLayout);
 
         for (int index = 0; index < images.size(); index++)
         {

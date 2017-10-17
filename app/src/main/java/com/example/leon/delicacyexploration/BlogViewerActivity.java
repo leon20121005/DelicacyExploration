@@ -27,7 +27,7 @@ public class BlogViewerActivity extends AppCompatActivity
         }
 
         WebView webView = (WebView) findViewById(R.id.webView);
-        webView.loadUrl("https://www.google.com.tw");
+        webView.loadUrl(getIntent().getStringExtra(ShopDetailFragment.COMMENT_URL_KEY));
     }
 
     @Override
