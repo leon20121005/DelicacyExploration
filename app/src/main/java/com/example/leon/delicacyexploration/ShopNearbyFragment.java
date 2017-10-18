@@ -127,11 +127,6 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
                 ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
             }
         });
-
-        if (_shopList.size() != 0)
-        {
-            Toast.makeText(getActivity(), "顯示附近" + Double.toString(_queryRange) + "公里店家", Toast.LENGTH_SHORT).show();
-        }
     }
 
     private void InitializeLocation()

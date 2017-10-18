@@ -29,7 +29,5 @@
     <string name="title_fragment_search">店家搜尋</string>
     <string name="title_fragment_favorite">我的最愛</string>
 
-    <string name="about_content">
-        \n更新日期: 2017/10/16\n\n資料來源: 痞客邦PIXNET
-    </string>
+    <string name="default_about_content">default_shop_name</string>
 </resources>

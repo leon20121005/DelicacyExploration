@@ -115,10 +115,6 @@ public class JsonParser
                     imageList.add(bitmap);
                 }
             }
-            else
-            {
-                Toast.makeText(_context, "No images found", Toast.LENGTH_SHORT).show();
-            }
         }
         catch (JSONException exception)
         {
