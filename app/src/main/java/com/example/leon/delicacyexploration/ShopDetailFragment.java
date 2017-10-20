@@ -104,11 +104,11 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
 
         if (_isFavorite)
         {
-            imageButton.setBackgroundResource(R.drawable.ic_star_black_24px);
+            imageButton.setBackgroundResource(R.drawable.ic_star_yellow_24px);
         }
         else
         {
-            imageButton.setBackgroundResource(R.drawable.ic_star_border_black_24px);
+            imageButton.setBackgroundResource(R.drawable.ic_star_border_yellow_24px);
         }
 
         imageButton.setOnClickListener(new View.OnClickListener()
@@ -122,7 +122,7 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
                 if (_isFavorite)
                 {
                     _isFavorite = false;
-                    imageButton.setBackgroundResource(R.drawable.ic_star_border_black_24px);
+                    imageButton.setBackgroundResource(R.drawable.ic_star_border_yellow_24px);
                     favoriteShopIDList.remove(Integer.toString(_data.GetID()));
                     Toast.makeText(getActivity(), "已移除收藏", Toast.LENGTH_SHORT).show();
 
@@ -130,7 +130,7 @@ public class ShopDetailFragment extends Fragment implements OnMapReadyCallback, 
                 else
                 {
                     _isFavorite = true;
-                    imageButton.setBackgroundResource(R.drawable.ic_star_black_24px);
+                    imageButton.setBackgroundResource(R.drawable.ic_star_yellow_24px);
                     favoriteShopIDList.add(Integer.toString(_data.GetID()));
                     Toast.makeText(getActivity(), "已加入收藏", Toast.LENGTH_SHORT).show();
                 }

@@ -156,6 +156,8 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
             if (permissions.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
                 InitializeLocation();
+                SendQuery();
+                InitializeLocationTextView(getView());
             }
             else
             {

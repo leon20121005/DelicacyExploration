@@ -24,7 +24,7 @@
             android:title="@string/title_fragment_search" />
         <item
             android:id="@+id/nav_shop_favorite"
-            android:icon="@drawable/ic_star_border_black_24px"
+            android:icon="@drawable/ic_star_border_yellow_24px"
             android:title="@string/title_fragment_favorite" />
     </group>
 

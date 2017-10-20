@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.view.MenuItem;
 
 public class BlogViewerActivity extends AppCompatActivity
@@ -27,6 +28,7 @@ public class BlogViewerActivity extends AppCompatActivity
         }
 
         WebView webView = (WebView) findViewById(R.id.webView);
+        webView.setWebViewClient(new WebViewClient());
         webView.loadUrl(getIntent().getStringExtra(ShopDetailFragment.COMMENT_URL_KEY));
     }
 
