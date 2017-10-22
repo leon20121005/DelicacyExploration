@@ -18,12 +18,12 @@ import android.view.MenuItem;
 import android.support.annotation.NonNull;
 
 import java.util.HashMap;
+import java.util.Stack;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, BitmapCacheManager
 {
-    private Fragment _previousFragment;
-    private Fragment _currentFragment;
+    private Stack<Fragment> _fragmentStack;
     private Map<String, Bitmap> _bitmapCache;
 
     @Override
@@ -41,12 +41,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view)
             {
-                if (_previousFragment != null)
+                if (_fragmentStack.size() > 1)
                 {
-                    _currentFragment = _previousFragment;
-                    _previousFragment = null;
+                    _fragmentStack.pop();
                     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.content_frame, _currentFragment);
+                    transaction.replace(R.id.content_frame, _fragmentStack.peek());
                     transaction.commit();
                 }
             }
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        _fragmentStack = new Stack<>();
         _bitmapCache = new HashMap<>();
 
         DisplayHome();
@@ -73,12 +73,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if (_previousFragment != null) //如果在店家細節時按上一頁則回到店家細節的上一個列表
+        else if (_fragmentStack.size() > 1) //如果在店家細節時按上一頁則回到店家細節的上一個列表
         {
-            _currentFragment = _previousFragment;
-            _previousFragment = null;
+            _fragmentStack.pop();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.content_frame, _currentFragment);
+            transaction.replace(R.id.content_frame, _fragmentStack.peek());
             transaction.commit();
         }
         else
@@ -117,12 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
-        //如果在店家細節時切換到別的列表就捨棄按上一頁回到店家細節的上一個列表的機制
-        if (_previousFragment != null)
-        {
-            _previousFragment = null;
-        }
-
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -160,76 +153,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
-        if (_currentFragment.getClass() == ShopDetailFragment.class)
+        if (_fragmentStack.peek().getClass() == ShopDetailFragment.class)
         {
-            ((ShopDetailFragment) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ((ShopDetailFragment) _fragmentStack.peek()).OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-        else if (_currentFragment.getClass() == ShopNearbyFragment.class)
+        else if (_fragmentStack.peek().getClass() == ShopNearbyFragment.class)
         {
-            ((ShopNearbyFragment) _currentFragment).OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            ((ShopNearbyFragment) _fragmentStack.peek()).OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     private void DisplayHome()
     {
-        _currentFragment = new HomeFragment();
+        _fragmentStack.push(new HomeFragment());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 
     public void DisplayShopList()
     {
-        _previousFragment = _currentFragment;
-        _currentFragment = new ShopListFragment();
+        _fragmentStack.push(new ShopListFragment());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 
     public void DisplayFilterShop()
     {
-        _previousFragment = _currentFragment;
-        _currentFragment = new ShopFilterFragment();
+        _fragmentStack.push(new ShopFilterFragment());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 
     public void DisplayNearbyShop()
     {
-        _previousFragment = _currentFragment;
-        _currentFragment = new ShopNearbyFragment();
+        _fragmentStack.push(new ShopNearbyFragment());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 
     public void DisplaySearchShop()
     {
-        _previousFragment = _currentFragment;
-        _currentFragment = new ShopSearchFragment();
+        _fragmentStack.push(new ShopSearchFragment());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 
     public void DisplayFavoriteShop()
     {
-        _previousFragment = _currentFragment;
-        _currentFragment = new ShopFavoriteFragment();
+        _fragmentStack.push(new ShopFavoriteFragment());
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 
     public void DisplayShopDetail(Shop shop)
     {
-        _previousFragment = _currentFragment;
-        _currentFragment = new ShopDetailFragment();
-        ((ShopDetailFragment) _currentFragment).SetShopData(shop);
+        _fragmentStack.push(new ShopDetailFragment());
+        ((ShopDetailFragment) _fragmentStack.peek()).SetShopData(shop);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, _currentFragment);
+        transaction.replace(R.id.content_frame, _fragmentStack.peek());
         transaction.commit();
     }
 

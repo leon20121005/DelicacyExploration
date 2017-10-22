@@ -74,8 +74,8 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
         returnButton.hide();
 
         InitializeLocation();
-        InitializeSpinner(view);
         InitializeLocationTextView(view);
+        InitializeSpinner(view);
     }
 
     @Override
@@ -156,14 +156,29 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
             if (permissions.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
                 InitializeLocation();
-                SendQuery();
                 InitializeLocationTextView(getView());
+                SendQuery();
             }
             else
             {
                 // Permission was denied. Display an error message.
                 Toast.makeText(getActivity(), "No permission to initialize location", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private void InitializeLocationTextView(View view)
+    {
+        TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
+        try
+        {
+            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+            List<Address> addressList = geocoder.getFromLocation(_latitude, _longitude, 1);
+            locationTextView.setText(addressList.get(0).getAddressLine(0) + " " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
+        }
+        catch (IOException | IndexOutOfBoundsException exception)
+        {
+            locationTextView.setText("Unknown address " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
         }
     }
 
@@ -229,21 +244,5 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
         String queryURL = homeURL + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
 
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
-    }
-
-    private void InitializeLocationTextView(View view)
-    {
-        TextView locationTextView = (TextView) view.findViewById(R.id.locationTextView);
-
-        try
-        {
-            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-            List<Address> addressList = geocoder.getFromLocation(_latitude, _longitude, 1);
-            locationTextView.setText(addressList.get(0).getAddressLine(0) + " " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
-        }
-        catch (IOException | IndexOutOfBoundsException exception)
-        {
-            locationTextView.setText("Unknown address " + Double.toString(_latitude) + ", " + Double.toString(_longitude));
-        }
     }
 }
