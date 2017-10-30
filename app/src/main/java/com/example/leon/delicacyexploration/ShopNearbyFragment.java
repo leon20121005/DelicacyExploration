@@ -112,7 +112,7 @@ public class ShopNearbyFragment extends Fragment implements AsyncResponse
     //初始化ListView
     private void InitializeListView(View view)
     {
-        TextView emptyTextView = (TextView) view.findViewById(R.id.nearbyEmpty);
+        TextView emptyTextView = (TextView) view.findViewById(R.id.empty_textView);
         ListView listView = (ListView) view.findViewById(R.id.nearbyList);
         listView.setEmptyView(emptyTextView);
 

@@ -11,14 +11,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/shopDetailName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:padding="8dp"
-                android:text="@string/default_shop_name"
-                android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="320dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/shopDetailName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:padding="8dp"
+                    android:text="@string/default_shop_name"
+                    android:textSize="20sp" />
+            </LinearLayout>
             <ImageButton
                 android:id="@+id/imageButton"
                 android:layout_width="36dp"

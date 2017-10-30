@@ -8,7 +8,7 @@
     <string name="action_list">列表</string>
 
     <string name="server_ip_address">
-        http://36.231.101.58
+        http://36.231.126.248
     </string>
 
     <string name="favorite_shop_id_key">favoriteShopIDList</string>
@@ -29,5 +29,8 @@
     <string name="title_fragment_search">店家搜尋</string>
     <string name="title_fragment_favorite">我的最愛</string>
 
-    <string name="default_about_content">default_shop_name</string>
+    <string name="default_about_content">default_about_content</string>
+
+    <string name="default_empty_textView">No nearby shops</string>
+    <string name="default_location_textView">default_location_textView</string>
 </resources>
