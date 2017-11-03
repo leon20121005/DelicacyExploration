@@ -27,6 +27,10 @@ public class ShopSearchFragment extends Fragment implements AsyncResponse, Searc
     private SearchView _searchView;
     private ArrayList<Shop> _shopList;
 
+    private String _previousQueryText;
+    private int _listViewPreviousIndex;
+    private int _listViewPreviousTop;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -50,6 +54,11 @@ public class ShopSearchFragment extends Fragment implements AsyncResponse, Searc
 
         FloatingActionButton returnButton = (FloatingActionButton) getActivity().findViewById(R.id.returnButton);
         returnButton.hide();
+
+        if (_previousQueryText != null)
+        {
+            SendQuery(_previousQueryText);
+        }
     }
 
     @Override
@@ -71,17 +80,21 @@ public class ShopSearchFragment extends Fragment implements AsyncResponse, Searc
         {
             return false;
         }
+        _previousQueryText = query.trim();
+        _searchView.clearFocus(); //提交查詢之後關閉鍵盤
+        SendQuery(_previousQueryText);
 
+        return false;
+    }
+
+    private void SendQuery(String query)
+    {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String queryKeyword = "keyword=" + query.trim();
+        String queryKeyword = "keyword=" + query;
         String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
         String queryURL = homeURL + SEARCH_SHOP_URL + "?" + queryKeyword;
 
         new HttpRequestAsyncTask((Fragment) this).execute(queryURL);
-
-        _searchView.clearFocus(); //提交查詢之後關閉鍵盤
-
-        return false;
     }
 
     @Override
@@ -117,18 +130,24 @@ public class ShopSearchFragment extends Fragment implements AsyncResponse, Searc
         TextView welcomeTextView = (TextView) view.findViewById(R.id.welcomeTextView);
         welcomeTextView.setVisibility(View.GONE);
 
+        final ListView listView = (ListView) view.findViewById(R.id.searchList);
         TextView emptyTextView = (TextView) view.findViewById(R.id.searchEmpty);
-        ListView listView = (ListView) view.findViewById(R.id.searchList);
         listView.setEmptyView(emptyTextView);
 
         ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
         listView.setAdapter(shopListAdapter);
+        listView.setSelectionFromTop(_listViewPreviousIndex, _listViewPreviousTop);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
+                // Save index and top position
+                _listViewPreviousIndex = listView.getFirstVisiblePosition();
+                View childView = listView.getChildAt(0);
+                _listViewPreviousTop = (childView == null) ? 0 : (childView.getTop() - listView.getPaddingTop());
+
                 ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
             }
         });

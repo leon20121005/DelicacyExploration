@@ -21,6 +21,9 @@ public class ShopListFragment extends Fragment implements AsyncResponse
     private final String SHOP_LIST_URL = "/android/get_all_shops.php";
     private ArrayList<Shop> _shopList = new ArrayList<>();
 
+    private int _listViewPreviousIndex;
+    private int _listViewPreviousTop;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -56,15 +59,21 @@ public class ShopListFragment extends Fragment implements AsyncResponse
     //初始化ListView
     private void InitializeListView(View view)
     {
-        ListView listView = (ListView) view.findViewById(R.id.shopList);
+        final ListView listView = (ListView) view.findViewById(R.id.shopList);
         ShopListAdapter shopListAdapter = new ShopListAdapter(getActivity(), _shopList);
         listView.setAdapter(shopListAdapter);
+        listView.setSelectionFromTop(_listViewPreviousIndex, _listViewPreviousTop);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
             {
+                // Save index and top position
+                _listViewPreviousIndex = listView.getFirstVisiblePosition();
+                View childView = listView.getChildAt(0);
+                _listViewPreviousTop = (childView == null) ? 0 : (childView.getTop() - listView.getPaddingTop());
+
                 ((MainActivity) getActivity()).DisplayShopDetail(_shopList.get(position));
             }
         });
