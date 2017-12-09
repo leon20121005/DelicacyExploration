@@ -19,7 +19,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,12 +76,7 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
         toggle.syncState();
 
         InitializeLocation();
-        SendQuery();
-
-        _mapView = (MapView) findViewById(R.id.mapView);
-        _mapView.onCreate(savedInstanceState);
-        _mapView.onResume();
-        _mapView.getMapAsync(this);
+        InitializeMapView(savedInstanceState);
 
         _bitmapCache = new HashMap<>();
     }
@@ -103,17 +100,12 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
         }
     }
 
-    private void SendQuery()
+    private void InitializeMapView(Bundle savedInstanceState)
     {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String latitude = "lat=" + Double.toString(_latitude);
-        String longitude = "lng=" + Double.toString(_longitude);
-        String radius = "radius=" + Double.toString(_queryRange);
-        String limit = "limit=" + Integer.toString(20);
-        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
-        String queryURL = homeURL + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
-
-        new HttpRequestAsyncTask(this).execute(queryURL);
+        _mapView = (MapView) findViewById(R.id.mapView);
+        _mapView.onCreate(savedInstanceState);
+        _mapView.onResume();
+        _mapView.getMapAsync(this);
     }
 
     @Override
@@ -170,6 +162,7 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
             if (permissions.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
             {
                 InitializeLocation();
+                SendQuery();
             }
             else
             {
@@ -180,12 +173,124 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
     }
 
     @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        _googleMap = googleMap;
+        _googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+        {
+            @Override
+            public boolean onMarkerClick(Marker marker)
+            {
+                HighLightShop(_markerList.indexOf(marker));
+                return true;
+            }
+        });
+
+        EnableMyLocation();
+        InitializeSpinner();
+    }
+
+    private void HighLightShop(int position)
+    {
+        LatLng latLng = new LatLng(_shopList.get(position).GetLatitude(), _shopList.get(position).GetLongitude());
+        _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+
+        if (_previousMarker != null)
+        {
+            _previousMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        }
+        _previousMarker = _markerList.get(position);
+        _markerList.get(position).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        _markerList.get(position).showInfoWindow();
+    }
+
+    //在啟用「我的位置」圖層之前，使用「支援」程式庫檢查權限
+    private void EnableMyLocation()
+    {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // Show rationale and request permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
+        }
+        else if (_googleMap != null)
+        {
+            // Access to the location has been granted to the app
+            _googleMap.setMyLocationEnabled(true);
+        }
+    }
+
+    //初始化Spinner
+    private void InitializeSpinner()
+    {
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        String[] range = {"200公尺", "500公尺", "1公里", "3公里", "5公里", "10公里"};
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, range);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinnerArrayAdapter);
+
+        spinner.setSelection(3, false); //第二個參數為false讓這個設定不會實際觸發onItemSelected()
+        if (_queryRange == DEFAULT_QUERY_RANGE) //只有在預設範圍 (初始化完)時才主動送出Query
+        {
+            SendQuery();
+        }
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id)
+            {
+                switch (position)
+                {
+                    case 0:
+                        _queryRange = 0.2;
+                        break;
+                    case 1:
+                        _queryRange = 0.5;
+                        break;
+                    case 2:
+                        _queryRange = 1;
+                        break;
+                    case 3:
+                        _queryRange = 3;
+                        break;
+                    case 4:
+                        _queryRange = 5;
+                        break;
+                    case 5:
+                        _queryRange = 10;
+                        break;
+                }
+                SendQuery();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+            }
+        });
+    }
+
+    private void SendQuery()
+    {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String latitude = "lat=" + Double.toString(_latitude);
+        String longitude = "lng=" + Double.toString(_longitude);
+        String radius = "radius=" + Double.toString(_queryRange);
+        String limit = "limit=" + Integer.toString(20);
+        String homeURL = sharedPreferences.getString(getString(R.string.custom_ip_key), getString(R.string.server_ip_address));
+        String queryURL = homeURL + NEARBY_SHOP_URL + "?" + latitude + "&" + longitude + "&" + radius + "&" + limit;
+
+        new HttpRequestAsyncTask(this).execute(queryURL);
+    }
+
+    @Override
     public void FinishAsyncProcess(String output)
     {
         JsonParser jsonParser = new JsonParser(this);
         _shopList = jsonParser.ParseShopList(output);
 
         InitializeListView();
+        InitializeMarker();
     }
 
     //初始化ListView
@@ -208,52 +313,11 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
         });
     }
 
-    private void HighLightShop(int position)
+    private void InitializeMarker()
     {
-        LatLng latLng = new LatLng(_shopList.get(position).GetLatitude(), _shopList.get(position).GetLongitude());
-        _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
-
-        if (_previousMarker != null)
-        {
-            _previousMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-        }
-        _previousMarker = _markerList.get(position);
-        _markerList.get(position).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-        _markerList.get(position).showInfoWindow();
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        _googleMap = googleMap;
-        _googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
-        {
-            @Override
-            public boolean onMarkerClick(Marker marker)
-            {
-                HighLightShop(_markerList.indexOf(marker));
-                return true;
-            }
-        });
-
+        _googleMap.clear();
         _googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(_latitude, _longitude), 16));
-        EnableMyLocation();
         PositioningAddress();
-    }
-
-    //在啟用「我的位置」圖層之前，使用「支援」程式庫檢查權限
-    private void EnableMyLocation()
-    {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            // Show rationale and request permission
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
-        }
-        else if (_googleMap != null)
-        {
-            // Access to the location has been granted to the app
-            _googleMap.setMyLocationEnabled(true);
-        }
     }
 
     //根據店家的地址將位置標記在地圖上
@@ -268,7 +332,9 @@ public class MapActivity extends AppCompatActivity implements AsyncResponse, OnM
                 for (int index = 0; index < _shopList.size(); index++)
                 {
                     LatLng latLng = new LatLng(_shopList.get(index).GetLatitude(), _shopList.get(index).GetLongitude());
-                    Marker marker = _googleMap.addMarker(new MarkerOptions().position(latLng).title(_shopList.get(index).GetName()).snippet(_shopList.get(index).GetAddress()));
+                    Marker marker = _googleMap.addMarker(new MarkerOptions().position(latLng)
+                                                                            .title(_shopList.get(index).GetName())
+                                                                            .snippet(_shopList.get(index).GetAddress()));
                     _markerList.add(marker);
                 }
             }
